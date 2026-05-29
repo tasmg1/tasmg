@@ -203,6 +203,26 @@ if ('loading' in HTMLImageElement.prototype) {
 const DATABASE_URL = "https://playzone-16197-default-rtdb.firebaseio.com";
 const counterGames = ["the-challenge", "chicken-life"];
 
+// وضع الأدمن: يمنع احتساب زياراتك أنت في عداد الموقع
+// فعّله بفتح الموقع مرة واحدة هكذا: ?admin=true
+// وألغِه هكذا: ?admin=false
+const ADMIN_KEY = "playzone_admin_mode";
+const urlParams = new URLSearchParams(window.location.search);
+
+if (urlParams.get("admin") === "true") {
+    localStorage.setItem(ADMIN_KEY, "true");
+    console.log("👑 Admin mode enabled: counters will not increase from this device.");
+}
+
+if (urlParams.get("admin") === "false") {
+    localStorage.removeItem(ADMIN_KEY);
+    console.log("👑 Admin mode disabled.");
+}
+
+function isAdminVisit() {
+    return localStorage.getItem(ADMIN_KEY) === "true";
+}
+
 function getCounterElement(gameId) {
     return document.getElementById("count-" + gameId);
 }
@@ -247,6 +267,20 @@ async function loadDownloadVisits() {
 async function countDownloadVisit(gameId) {
     const element = getCounterElement(gameId);
     const oldText = element ? element.textContent : "000";
+
+    // إذا كان الجهاز في وضع الأدمن، لا نزيد عداد Firebase
+    if (isAdminVisit()) {
+        console.log("Admin visit: download counter ignored for", gameId);
+
+        try {
+            const current = await readCounter(gameId);
+            if (element) element.textContent = formatCounter(current);
+        } catch (error) {
+            if (element) element.textContent = oldText;
+        }
+
+        return;
+    }
 
     try {
         if (element) element.textContent = "...";
@@ -963,4 +997,3 @@ footer {
 }
 
 </style>
-
