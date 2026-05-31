@@ -808,6 +808,22 @@ nav a.active {
   box-shadow: 0 20px 50px rgba(39,255,157,.25);
 }
 
+.game-cover-image {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 220px);
+  height: 270px;
+  object-fit: cover;
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: 0 24px 60px rgba(0,0,0,.38), 0 0 32px rgba(0,234,255,.12);
+  animation: iconBounce 3s ease-in-out infinite;
+}
+
+.game-cover-image.cover-green {
+  box-shadow: 0 24px 60px rgba(0,0,0,.38), 0 0 32px rgba(39,255,157,.14);
+}
+
 @keyframes iconBounce {
   50% { transform: translateY(-8px) scale(1.05); }
 }
@@ -1723,9 +1739,7 @@ footer {
               <div class="game-card-inner">
                 <div class="game-visual">
                   <div class="game-bg-pattern"></div>
-                  <div class="game-icon-large">
-                    <iconify-icon icon="solar:sword-bold" width="48"></iconify-icon>
-                  </div>
+                  <img class="game-cover-image" src="IMG1.PNG" alt="The Challenge" loading="lazy">
                   <div class="game-badges">
                     <span class="game-badge hot">
                       <iconify-icon icon="solar:fire-bold"></iconify-icon>
@@ -1791,9 +1805,7 @@ footer {
               <div class="game-card-inner">
                 <div class="game-visual">
                   <div class="game-bg-pattern pattern-2"></div>
-                  <div class="game-icon-large icon-green">
-                    <iconify-icon icon="game-icons:chicken" width="48"></iconify-icon>
-                  </div>
+                  <img class="game-cover-image cover-green" src="IMG2.PNG" alt="Chicken Life" loading="lazy">
                   <div class="game-badges">
                     <span class="game-badge new">
                       <iconify-icon icon="solar:star-bold"></iconify-icon>
