@@ -3,31 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Play Zone | منصة الألعاب</title>
-  <meta name="description" content="منصة Play Zone - بوابتك لاكتشاف وتحميل أفضل ألعاب الموبايل بسرعة وأمان.">
+  <title>Play Zone | بوابة الألعاب المطلقة</title>
+  <meta name="description" content="منصة Play Zone - بوابتك لاكتشاف وتحميل أقوى ألعاب الموبايل بسرعة وأمان.">
   <meta name="theme-color" content="#050508" />
   
-  <!-- خطوط عصرية وفخمة (Alexandria للعربي + Orbitron للإنجليزي) -->
+  <!-- خطوط عصرية وفخمة (Alexandria للعربي + Orbitron للإنجليزي والأرقام) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;600;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
   
   <!-- مكتبة الأيقونات -->
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 
   <style>
     /* ==========================================================================
-       1. المتغيرات والألوان (Cyber-Glassmorphism)
+       1. المتغيرات والألوان (Cyber-Gamer Aesthetic)
        ========================================================================== */
     :root {
       --bg-dark: #050508;
       --bg-surface: rgba(20, 22, 30, 0.4);
       --primary: #00f0ff;
-      --primary-glow: rgba(0, 240, 255, 0.4);
+      --primary-glow: rgba(0, 240, 255, 0.5);
       --secondary: #7000ff;
       --text-main: #ffffff;
       --text-muted: #8b949e;
-      --border: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.08);
       --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -37,13 +37,13 @@
     body {
       background-color: var(--bg-dark);
       color: var(--text-main);
-      font-family: 'Alexandria', sans-serif; /* الخط الجديد */
+      font-family: 'Alexandria', sans-serif;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
     /* ==========================================================================
-       2. الدخولية السينمائية (Spotlight Search & Reveal)
+       2. الدخولية السينمائية (Spotlight Intro)
        ========================================================================== */
     #intro-screen {
       position: fixed; inset: 0; z-index: 999999;
@@ -53,14 +53,12 @@
       transition: opacity 0.8s ease;
     }
     
-    /* الشعار والاسم (مخفيان في البداية، ويظهران فقط عند استقرار الكشاف) */
     .intro-brand {
       position: relative; z-index: 1;
-      display: flex; flex-direction: column; align-items: center; gap: 15px;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
       opacity: 0;
       transform: scale(0.9);
       filter: blur(10px);
-      /* يظهر بعد 3.2 ثانية (لحظة وصول الكشاف للمنتصف) */
       animation: revealBrand 0.8s 3.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     
@@ -69,24 +67,24 @@
     }
 
     .intro-logo-icon {
-      font-size: 6rem; color: #fff;
-      filter: drop-shadow(0 0 20px var(--primary-glow));
+      font-size: 5rem; /* تم التصغير */
+      color: #fff;
+      filter: drop-shadow(0 0 25px var(--primary-glow));
     }
     .intro-name {
-      font-family: 'Orbitron', sans-serif; font-size: clamp(2.5rem, 8vw, 4.5rem);
-      font-weight: 900; letter-spacing: 6px;
-      background: linear-gradient(135deg, #fff 40%, var(--primary));
+      font-family: 'Orbitron', sans-serif; 
+      font-size: clamp(2rem, 6vw, 3.5rem); /* تم التصغير */
+      font-weight: 900; letter-spacing: 4px;
+      background: linear-gradient(135deg, #fff 30%, var(--primary));
       -webkit-background-clip: text; color: transparent;
     }
 
-    /* الكشاف الضوئي المذهل */
     .spotlight-mask {
       position: absolute; top: 50%; left: 50%;
       width: 250px; height: 250px;
       margin: -125px 0 0 -125px;
       border-radius: 50%;
       background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-      /* إخفاء باقي الشاشة بظل أسود عملاق */
       box-shadow: inset 0 0 30px 15px var(--bg-dark), 0 0 0 150vmax var(--bg-dark);
       pointer-events: none; z-index: 2;
       will-change: transform, box-shadow;
@@ -99,9 +97,9 @@
       40%  { transform: translate(20vw, 30vh) scale(0.5); }
       60%  { transform: translate(-30vw, 20vh) scale(0.6); }
       75%  { transform: translate(0, 0) scale(1.1); box-shadow: inset 0 0 30px 15px var(--bg-dark), 0 0 0 150vmax var(--bg-dark); }
-      80%  { transform: translate(0, 0) scale(1.3); box-shadow: inset 0 0 30px 15px var(--bg-dark), 0 0 0 150vmax var(--bg-dark), inset 0 0 80px rgba(0,240,255,0.3); } /* لمعة بسيطة */
+      80%  { transform: translate(0, 0) scale(1.3); box-shadow: inset 0 0 30px 15px var(--bg-dark), 0 0 0 150vmax var(--bg-dark), inset 0 0 80px rgba(0,240,255,0.4); }
       90%  { transform: translate(0, 0) scale(1.3); opacity: 1; }
-      100% { transform: translate(0, 0) scale(30); opacity: 0; display: none; }
+      100% { transform: translate(0, 0) scale(35); opacity: 0; }
     }
 
     /* ==========================================================================
@@ -110,172 +108,173 @@
     .ambient-bg {
       position: fixed; inset: 0; z-index: -1;
       background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(circle at top, black 30%, transparent 80%);
-      -webkit-mask-image: radial-gradient(circle at top, black 30%, transparent 80%);
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 50px 50px;
+      mask-image: radial-gradient(circle at top, black 40%, transparent 85%);
+      -webkit-mask-image: radial-gradient(circle at top, black 40%, transparent 85%);
     }
 
     .glow-orb {
-      position: fixed; width: 50vw; height: 50vw; border-radius: 50%;
-      filter: blur(150px); opacity: 0.12; pointer-events: none;
+      position: fixed; width: 55vw; height: 55vw; border-radius: 50%;
+      filter: blur(160px); opacity: 0.15; pointer-events: none;
       animation: orbFloat 25s infinite alternate ease-in-out;
     }
     .orb-1 { top: -10%; right: -10%; background: var(--primary); }
     .orb-2 { bottom: -10%; left: -10%; background: var(--secondary); animation-delay: -12s; }
-    @keyframes orbFloat { 100% { transform: translate(-50px, 50px); } }
+    @keyframes orbFloat { 100% { transform: translate(-40px, 40px); } }
 
     /* ==========================================================================
        4. الشريط العلوي (Header)
        ========================================================================== */
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+    .container { max-width: 1150px; margin: 0 auto; padding: 0 20px; }
     
     header {
-      position: sticky; top: 0; z-index: 1000; padding: 20px 0;
+      position: sticky; top: 0; z-index: 1000; padding: 15px 0;
       background: linear-gradient(to bottom, rgba(5,5,8,0.95), transparent);
       backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     }
     
     .navbar { display: flex; justify-content: space-between; align-items: center; }
-    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
     .brand-logo-box {
-      width: 42px; height: 42px; background: rgba(255,255,255,0.03);
+      width: 38px; height: 38px; background: rgba(255,255,255,0.03);
       border: 1px solid var(--border); border-radius: 10px;
       display: flex; justify-content: center; align-items: center;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
     }
-    .brand-logo-box iconify-icon { font-size: 1.6rem; color: var(--primary); }
+    .brand-logo-box iconify-icon { font-size: 1.4rem; color: var(--primary); }
     .brand-name {
-      font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 900;
+      font-family: 'Orbitron', sans-serif; font-size: 1.25rem; font-weight: 900;
       background: linear-gradient(90deg, #fff, var(--primary)); -webkit-background-clip: text; color: transparent;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
     }
 
     /* ==========================================================================
        5. القسم الرئيسي (Hero Section)
        ========================================================================== */
-    .hero { min-height: 75vh; display: flex; align-items: center; position: relative; padding-top: 40px; }
+    .hero { min-height: 70vh; display: flex; align-items: center; position: relative; padding-top: 30px; }
     .hero-content { max-width: 700px; position: relative; z-index: 2; }
     
     .status-badge {
-      display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 50px;
-      background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.2);
-      color: var(--primary); font-weight: 600; font-size: 0.85rem;
-      margin-bottom: 25px; letter-spacing: 0.5px;
+      display: inline-flex; align-items: center; gap: 8px; padding: 5px 14px; border-radius: 50px;
+      background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.25);
+      color: var(--primary); font-family: 'Orbitron', 'Alexandria', sans-serif; font-weight: 700; font-size: 0.8rem;
+      margin-bottom: 20px; letter-spacing: 0.5px;
     }
-    .status-badge .dot { width: 6px; height: 6px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); animation: blink 1.5s infinite; }
+    .status-badge .dot { width: 6px; height: 6px; background: #00ff41; border-radius: 50%; box-shadow: 0 0 10px #00ff41; animation: blink 1.5s infinite; }
     @keyframes blink { 50% { opacity: 0.3; } }
 
-    .hero h1 { font-size: clamp(2.5rem, 5.5vw, 4.5rem); font-weight: 900; line-height: 1.2; margin-bottom: 20px; }
-    .hero p { font-size: 1.1rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 40px; }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 900; line-height: 1.2; margin-bottom: 18px; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .hero p { font-size: 1rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 30px; }
 
-    .btn-group { display: flex; gap: 15px; flex-wrap: wrap; }
+    .btn-group { display: flex; gap: 12px; flex-wrap: wrap; }
     .btn {
-      display: inline-flex; justify-content: center; align-items: center; gap: 10px;
-      padding: 14px 28px; border-radius: 12px; font-weight: 800; font-size: 1rem;
+      display: inline-flex; justify-content: center; align-items: center; gap: 8px;
+      padding: 12px 26px; border-radius: 10px; font-weight: 700; font-size: 0.95rem;
       text-decoration: none; transition: var(--transition);
     }
-    .btn-primary { background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.1); }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(255,255,255,0.3); }
-    .btn-outline { background: rgba(255,255,255,0.02); color: #fff; border: 1px solid var(--border); backdrop-filter: blur(10px); }
-    .btn-outline:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
+    .btn-primary { background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(255,255,255,0.35); }
+    .btn-outline { background: rgba(255,255,255,0.03); color: #fff; border: 1px solid var(--border); backdrop-filter: blur(10px); }
+    .btn-outline:hover { background: rgba(0, 240, 255, 0.1); border-color: rgba(0, 240, 255, 0.4); color: var(--primary); }
 
     /* ==========================================================================
-       6. بطاقات الألعاب (إظهار الصورة كاملة + إضاءة الماوس)
+       6. الألعاب (Spotlight Cards)
        ========================================================================== */
-    .section-title { font-size: 2.2rem; font-weight: 900; margin: 80px 0 40px; display: flex; align-items: center; gap: 15px; }
+    .section-title { font-size: 1.8rem; font-weight: 800; margin: 70px 0 35px; display: flex; align-items: center; gap: 12px; }
     .section-title span { color: var(--primary); }
 
-    .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+    .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
 
     .spotlight-card {
       position: relative; background: var(--bg-surface); border: 1px solid var(--border);
-      border-radius: 20px; overflow: hidden; display: flex; flex-direction: column;
+      border-radius: 18px; overflow: hidden; display: flex; flex-direction: column;
       backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-      transition: border-color 0.4s ease;
+      transition: border-color 0.4s ease, transform 0.4s ease;
     }
     
-    /* إضاءة الماوس تعمل فقط في الأجهزة الداعمة للماوس (تجنب مشاكل اللمس) */
     @media (hover: hover) {
       .spotlight-card::before {
         content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-        background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%);
+        background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(0, 240, 255, 0.08), transparent 40%);
         opacity: 0; transition: opacity 0.5s;
       }
       .spotlight-card:hover::before { opacity: 1; }
-      .spotlight-card:hover { border-color: rgba(255,255,255,0.15); }
+      .spotlight-card:hover { border-color: rgba(0, 240, 255, 0.3); transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
     }
 
-    /* عرض الصورة بالكامل دون قص */
     .card-image-box {
-      width: 100%; height: 260px; position: relative; z-index: 1;
-      padding: 30px; display: flex; justify-content: center; align-items: center;
-      background: radial-gradient(circle at top, rgba(0, 240, 255, 0.03), transparent);
+      width: 100%; height: 230px; position: relative; z-index: 1;
+      padding: 25px; display: flex; justify-content: center; align-items: center;
+      background: radial-gradient(circle at top, rgba(0, 240, 255, 0.04), rgba(0,0,0,0.4));
       border-bottom: 1px solid var(--border);
     }
     .card-image-box img {
-      width: 100%; height: 100%; object-fit: contain; /* إظهار الصورة بالكامل */
-      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6));
+      width: 100%; height: 100%; object-fit: contain;
+      filter: drop-shadow(0 15px 20px rgba(0,0,0,0.7));
       transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .spotlight-card:hover .card-image-box img { transform: scale(1.05) translateY(-5px); }
+    .spotlight-card:hover .card-image-box img { transform: scale(1.06) translateY(-5px); filter: drop-shadow(0 18px 25px rgba(0,0,0,0.8)); }
 
     .price-tag {
-      position: absolute; top: 15px; right: 15px; z-index: 2;
-      background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
+      position: absolute; top: 12px; right: 12px; z-index: 2;
+      background: rgba(0,0,0,0.75); backdrop-filter: blur(5px);
       border: 1px solid rgba(0, 240, 255, 0.3); color: var(--primary);
-      padding: 5px 12px; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9rem;
+      padding: 4px 10px; border-radius: 6px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.8rem;
     }
 
-    .card-content { padding: 25px; position: relative; z-index: 1; flex-grow: 1; display: flex; flex-direction: column; }
-    .card-content h3 { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 900; margin-bottom: 10px; }
-    .card-content p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px; flex-grow: 1; line-height: 1.6; }
+    .card-content { padding: 20px; position: relative; z-index: 1; flex-grow: 1; display: flex; flex-direction: column; }
+    .card-content h3 { font-family: 'Orbitron', 'Alexandria', sans-serif; font-size: 1.25rem; font-weight: 800; margin-bottom: 8px; }
+    .card-content p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; flex-grow: 1; line-height: 1.6; }
 
-    /* أزرار التحميل المخصصة */
-    .download-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .download-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .dl-btn {
-      display: flex; justify-content: center; align-items: center; gap: 8px;
-      padding: 10px; border-radius: 10px; background: rgba(255,255,255,0.03);
+      display: flex; justify-content: center; align-items: center; gap: 6px;
+      padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.03);
       border: 1px solid var(--border); color: #fff; text-decoration: none;
-      font-weight: 800; font-size: 0.95rem; transition: var(--transition);
+      font-family: 'Orbitron', 'Alexandria', sans-serif; font-weight: 700; font-size: 0.85rem; transition: var(--transition);
     }
-    .dl-btn iconify-icon { font-size: 1.3rem; }
-    .dl-ios:hover { background: #f8faff; color: #000; border-color: #f8faff; box-shadow: 0 0 15px rgba(255,255,255,0.2); }
-    .dl-android:hover { background: #3ddc84; color: #000; border-color: #3ddc84; box-shadow: 0 0 15px rgba(61,220,132,0.2); }
+    .dl-btn iconify-icon { font-size: 1.2rem; }
+    .dl-ios:hover { background: #f8faff; color: #000; border-color: #f8faff; box-shadow: 0 0 12px rgba(255,255,255,0.2); }
+    .dl-android:hover { background: #3ddc84; color: #000; border-color: #3ddc84; box-shadow: 0 0 12px rgba(61,220,132,0.3); }
 
     /* ==========================================================================
        7. التواصل
        ========================================================================== */
-    .social-bento { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 80px; }
+    .social-bento { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 70px; }
     .social-item {
-      padding: 25px; border-radius: 20px; display: flex; flex-direction: column; align-items: flex-start; gap: 15px;
-      text-decoration: none; color: #fff;
+      padding: 20px; border-radius: 16px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+      text-decoration: none; color: #fff; border: 1px solid var(--border); background: var(--bg-surface);
+      transition: transform 0.4s ease, border-color 0.4s ease;
     }
+    .social-item:hover { transform: translateY(-4px); }
+    
     .social-icon {
-      width: 50px; height: 50px; border-radius: 14px; background: rgba(255,255,255,0.04);
-      display: flex; justify-content: center; align-items: center; font-size: 1.8rem;
+      width: 48px; height: 48px; border-radius: 12px; background: rgba(255,255,255,0.04);
+      display: flex; justify-content: center; align-items: center; font-size: 1.6rem;
       border: 1px solid rgba(255,255,255,0.08); transition: var(--transition);
     }
-    .social-item h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 2px; }
+    .social-item h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 2px; }
     .social-item p { color: var(--text-muted); font-size: 0.85rem; font-weight: 600;}
 
-    .si-tg:hover { border-color: #0088cc; } .si-tg:hover .social-icon { background: #0088cc; color: #fff; border-color: #0088cc; box-shadow: 0 5px 20px rgba(0,136,204,0.3); }
-    .si-ig:hover { border-color: #e1306c; } .si-ig:hover .social-icon { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; border-color: transparent; box-shadow: 0 5px 20px rgba(225,48,108,0.3); }
-    .si-fb:hover { border-color: #1877f2; } .si-fb:hover .social-icon { background: #1877f2; color: #fff; border-color: #1877f2; box-shadow: 0 5px 20px rgba(24,119,242,0.3); }
-    .si-th:hover { border-color: #ffffff; } .si-th:hover .social-icon { background: #ffffff; color: #000; border-color: #ffffff; box-shadow: 0 5px 20px rgba(255,255,255,0.2); }
+    .si-tg:hover { border-color: #0088cc; } .si-tg:hover .social-icon { background: #0088cc; color: #fff; border-color: #0088cc; box-shadow: 0 5px 15px rgba(0,136,204,0.4); }
+    .si-ig:hover { border-color: #e1306c; } .si-ig:hover .social-icon { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; border-color: transparent; box-shadow: 0 5px 15px rgba(225,48,108,0.4); }
+    .si-fb:hover { border-color: #1877f2; } .si-fb:hover .social-icon { background: #1877f2; color: #fff; border-color: #1877f2; box-shadow: 0 5px 15px rgba(24,119,242,0.4); }
+    .si-th:hover { border-color: #ffffff; } .si-th:hover .social-icon { background: #ffffff; color: #000; border-color: #ffffff; box-shadow: 0 5px 15px rgba(255,255,255,0.3); }
 
     /* ==========================================================================
        8. الفوتر والأنيميشن
        ========================================================================== */
-    footer { padding: 30px 0; text-align: center; border-top: 1px solid var(--border); color: var(--text-muted); font-family: 'Orbitron', sans-serif; font-size: 0.9rem; letter-spacing: 1px;}
+    footer { padding: 25px 0; text-align: center; border-top: 1px solid var(--border); color: var(--text-muted); font-family: 'Orbitron', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
     
-    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal { opacity: 0; transform: translateY(20px); transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
     .reveal.active { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
-  <!-- 1. الدخولية السينمائية (تختفي الأسماء حتى يصل الكشاف للمنتصف) -->
+  <!-- الدخولية السينمائية المذهلة -->
   <div id="intro-screen">
     <div class="intro-brand">
       <div class="intro-logo-icon"><iconify-icon icon="solar:gamepad-bold"></iconify-icon></div>
@@ -284,12 +283,12 @@
     <div class="spotlight-mask"></div>
   </div>
 
-  <!-- 2. الخلفية -->
+  <!-- الخلفية -->
   <div class="ambient-bg"></div>
   <div class="glow-orb orb-1"></div>
   <div class="glow-orb orb-2"></div>
 
-  <!-- 3. المحتوى -->
+  <!-- المحتوى -->
   <div class="container">
     <header>
       <div class="navbar">
@@ -303,22 +302,22 @@
     <main>
       <section class="hero">
         <div class="hero-content reveal">
-          <div class="status-badge"><span class="dot"></span> النظام متصل وجاهز</div>
-          <h1>ارتقِ بمستوى اللعب<br> إلى حدود جديدة.</h1>
-          <p>اكتشف مكتبة حصرية من أفضل ألعاب الهاتف. تحميل فوري، أمان تام، وتجربة سلسة وموثوقة تبدأ بضغطة زر عبر البوت الرسمي الخاص بنا.</p>
+          <div class="status-badge"><span class="dot"></span> السيرفر متصل | Ping: 12ms</div>
+          <h1>ادخل الساحة.<br> سيطر على اللعب.</h1>
+          <p>استعد لتجربة لعب لا مثيل لها. اكتشف مكتبتنا الحصرية من أقوى ألعاب الموبايل، وحمّلها بضغطة زر عبر البوت الرسمي. انطلق نحو الصدارة بدون لاق!</p>
           <div class="btn-group">
             <a href="#games" class="btn btn-primary">
-              <iconify-icon icon="solar:gamepad-bold"></iconify-icon> تصفح الإصدارات
+              <iconify-icon icon="solar:gamepad-bold"></iconify-icon> تصفح الألعاب
             </a>
             <a href="https://t.me/P1ay_Z0ne_Bot" class="btn btn-outline" target="_blank">
-              <iconify-icon icon="mingcute:telegram-fill" style="color:var(--primary)"></iconify-icon> التحميل عبر البوت
+              <iconify-icon icon="mingcute:telegram-fill"></iconify-icon> افتح البوت الآن
             </a>
           </div>
         </div>
       </section>
 
       <section id="games">
-        <h2 class="section-title reveal"><iconify-icon icon="solar:box-minimalistic-bold-duotone"></iconify-icon> <span>أبرز</span> الإصدارات</h2>
+        <h2 class="section-title reveal"><iconify-icon icon="solar:box-minimalistic-bold-duotone"></iconify-icon> <span>أحدث</span> الإصدارات</h2>
         
         <div class="games-grid">
           <!-- اللعبة الأولى -->
@@ -329,7 +328,7 @@
             </div>
             <div class="card-content">
               <h3>The Challenge</h3>
-              <p>اختبر سرعة بديهتك في هذه اللعبة الاستراتيجية. تجاوز العقبات المتزايدة الصعوبة وتصدر قائمة أفضل اللاعبين في تحديات لا تنتهي.</p>
+              <p>اختبر ردود أفعالك في أصعب التحديات. تفادى الفخاخ، تخطَ العقبات المعقدة، واثبت مهارتك للوصول إلى قمة الـ Leaderboard. هل تقبل التحدي؟</p>
               <div class="download-grid">
                 <a href="https://t.me/P1ay_Z0ne_Bot" class="dl-btn dl-ios" target="_blank"><iconify-icon icon="ic:baseline-apple"></iconify-icon> iOS</a>
                 <a href="https://t.me/P1ay_Z0ne_Bot" class="dl-btn dl-android" target="_blank"><iconify-icon icon="mdi:android"></iconify-icon> Android</a>
@@ -345,7 +344,7 @@
             </div>
             <div class="card-content">
               <h3>Chicken Life</h3>
-              <p>انطلق في مغامرة فكاهية غير تقليدية. استكشف عالماً تفاعلياً مليئاً بالمفاجآت وأكمل مهامك اليومية بأسلوب مرح ومسلٍ.</p>
+              <p>عِش جنون اللعب في عالم مفتوح مليء بالكوميديا. أكمل المهام الغريبة، واجه تحديات غير متوقعة، واستمتع بتجربة لعب خفيفة وممتعة.</p>
               <div class="download-grid">
                 <a href="https://t.me/P1ay_Z0ne_Bot" class="dl-btn dl-ios" target="_blank"><iconify-icon icon="ic:baseline-apple"></iconify-icon> iOS</a>
                 <a href="https://t.me/P1ay_Z0ne_Bot" class="dl-btn dl-android" target="_blank"><iconify-icon icon="mdi:android"></iconify-icon> Android</a>
@@ -356,38 +355,38 @@
       </section>
 
       <section id="social">
-        <h2 class="section-title reveal"><iconify-icon icon="solar:global-bold-duotone"></iconify-icon> <span>ابقَ</span> متصلاً</h2>
+        <h2 class="section-title reveal"><iconify-icon icon="solar:global-bold-duotone"></iconify-icon> <span>مجتمع</span> الجيمرز</h2>
         
         <div class="social-bento">
-          <a href="https://t.me/P1ay_Z0ne_Bot" class="spotlight-card social-item si-tg reveal" target="_blank">
+          <a href="https://t.me/P1ay_Z0ne_Bot" class="social-item si-tg reveal" target="_blank">
             <div class="social-icon"><iconify-icon icon="mingcute:telegram-fill"></iconify-icon></div>
             <div>
               <h4>البوت الرسمي</h4>
-              <p>الرابط المباشر للتحميل</p>
+              <p>سيرفر التحميل المباشر</p>
             </div>
           </a>
 
-          <a href="https://www.instagram.com/p1ay.zone?igsh=MW9uYTB1dTZxZnpocQ%3D%3D&utm_source=qr" class="spotlight-card social-item si-ig reveal" target="_blank">
+          <a href="https://www.instagram.com/p1ay.zone?igsh=MW9uYTB1dTZxZnpocQ%3D%3D&utm_source=qr" class="social-item si-ig reveal" target="_blank">
             <div class="social-icon"><iconify-icon icon="mdi:instagram"></iconify-icon></div>
             <div>
               <h4>إنستغرام</h4>
-              <p>أحدث التغطيات والصور</p>
+              <p>لقطات حصرية وكواليس</p>
             </div>
           </a>
 
-          <a href="https://www.facebook.com/share/1AiqxvzMpc/?mibextid=wwXIfr" class="spotlight-card social-item si-fb reveal" target="_blank">
+          <a href="https://www.facebook.com/share/1AiqxvzMpc/?mibextid=wwXIfr" class="social-item si-fb reveal" target="_blank">
             <div class="social-icon"><iconify-icon icon="mdi:facebook"></iconify-icon></div>
             <div>
               <h4>فيسبوك</h4>
-              <p>انضم لمجتمع اللاعبين</p>
+              <p>مجتمع الجيمرز الأكبر</p>
             </div>
           </a>
 
-          <a href="https://www.threads.com/@p1ay.zone?igshid=NTc4MTIwNjQ2YQ==" class="spotlight-card social-item si-th reveal" target="_blank">
+          <a href="https://www.threads.com/@p1ay.zone?igshid=NTc4MTIwNjQ2YQ==" class="social-item si-th reveal" target="_blank">
             <div class="social-icon"><iconify-icon icon="simple-icons:threads"></iconify-icon></div>
             <div>
               <h4>ثريدز</h4>
-              <p>نقاشات سريعة ومباشرة</p>
+              <p>تحديثات السيرفر السريعة</p>
             </div>
           </a>
         </div>
@@ -401,8 +400,7 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. الدخولية (Intro Cleanup)
-      // تزول الدخولية بالكامل بعد انتهاء الأنيميشن (4.5 ثواني) لتوفير موارد المتصفح
+      // 1. تنظيف شاشة الدخولية بعد انتهاء العرض
       setTimeout(() => {
         const intro = document.getElementById('intro-screen');
         if(intro) {
@@ -411,21 +409,19 @@
         }
       }, 4500);
 
-      // 2. إضاءة البطاقات (Spotlight Hover on Cards)
-      // تطبق فقط إذا كان الجهاز يدعم الماوس
+      // 2. إضاءة بطاقات الألعاب (Spotlight Hover)
       if (window.matchMedia("(pointer: fine)").matches) {
         const cards = document.querySelectorAll('.spotlight-card');
         cards.forEach(card => {
           card.addEventListener('mousemove', e => {
             const rect = card.getBoundingClientRect();
-            // تحديث إحداثيات الإضاءة بناءً على موقع الماوس داخل البطاقة
             card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
             card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
           });
         });
       }
 
-      // 3. أنيميشن الظهور بسلاسة (Scroll Reveal)
+      // 3. الظهور السلس عند التمرير
       const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
