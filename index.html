@@ -3,464 +3,384 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PlayZone | منطقة اللعب</title>
-  <meta name="description" content="PlayZone - اكتشف وحمل أفضل ألعاب الموبايل بسهولة وأمان عبر منصتنا الرسمية.">
-  <meta name="theme-color" content="#0b0e14" />
+  <title>Play Zone | عالم الألعاب</title>
+  <meta name="description" content="Play Zone - اكتشف وحمل أفضل ألعاب الموبايل.">
+  <meta name="theme-color" content="#030305" />
   
-  <!-- الخطوط -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
   
-  <!-- الأيقونات -->
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 
   <style>
     /* ==========================================================================
-       1. المتغيرات الأساسية (سهلة التعديل مستقبلاً)
+       1. المتغيرات والألوان
        ========================================================================== */
     :root {
-      --bg-dark: #0b0e14;
-      --bg-card: rgba(22, 27, 34, 0.6);
-      --bg-card-hover: rgba(30, 37, 47, 0.8);
-      --primary: #00d2ff;
-      --secondary: #3a7bd5;
-      --text-main: #f0f6fc;
+      --bg-dark: #030305;
+      --bg-surface: rgba(20, 22, 30, 0.5);
+      --primary: #00f0ff;
+      --primary-glow: rgba(0, 240, 255, 0.4);
+      --secondary: #7000ff;
+      --text-main: #ffffff;
       --text-muted: #8b949e;
       --border: rgba(255, 255, 255, 0.08);
-      --border-glow: rgba(0, 210, 255, 0.3);
-      --radius: 16px;
-      --transition: 0.3s ease;
+      --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* ==========================================================================
-       2. الإعدادات العامة
-       ========================================================================== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
+    
     body {
       background-color: var(--bg-dark);
       color: var(--text-main);
       font-family: 'Cairo', sans-serif;
-      line-height: 1.6;
       overflow-x: hidden;
-      position: relative;
-    }
-
-    /* خلفية الموقع (تأثيرات ضوئية هادئة) */
-    .site-background {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
-      background: 
-        radial-gradient(circle at 15% 50%, rgba(0, 210, 255, 0.05), transparent 40%),
-        radial-gradient(circle at 85% 10%, rgba(58, 123, 213, 0.05), transparent 40%);
     }
 
     /* ==========================================================================
-       3. شاشة التحميل الافتتاحية (بدون زر إلغاء، تختفي بسلاسة)
+       2. فكرتك السينمائية: الكشاف الضوئي (Spotlight Intro)
        ========================================================================== */
-    #preloader {
-      position: fixed; inset: 0; z-index: 99999;
-      background: var(--bg-dark);
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
-    }
-    .loader-logo {
-      font-size: 4rem; color: var(--primary);
-      animation: pulse 1.5s infinite alternate;
-      filter: drop-shadow(0 0 20px var(--border-glow));
-    }
-    .loader-text {
-      margin-top: 15px; font-weight: 600; color: var(--text-muted); font-size: 1.1rem;
-      letter-spacing: 1px;
-    }
-    @keyframes pulse {
-      0% { transform: scale(0.9); opacity: 0.8; }
-      100% { transform: scale(1.1); opacity: 1; }
-    }
-
-    /* ==========================================================================
-       4. الهيكل الأساسي (Layout)
-       ========================================================================== */
-    .container { width: 90%; max-width: 1200px; margin: 0 auto; }
-    section { padding: 80px 0; }
-    .section-header { text-align: center; margin-bottom: 50px; }
-    .section-title { font-size: 2rem; font-weight: 800; margin-bottom: 10px; }
-    .section-desc { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
-
-    /* ==========================================================================
-       5. شريط التنقل (Navbar)
-       ========================================================================== */
-    header.navbar {
-      position: sticky; top: 0; z-index: 1000;
-      background: rgba(11, 14, 20, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-      border-bottom: 1px solid var(--border); padding: 15px 0;
-    }
-    .nav-container { display: flex; justify-content: space-between; align-items: center; }
-    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; }
-    .brand-icon { font-size: 2rem; color: var(--primary); }
-    .brand-name { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; }
-    .nav-links { display: flex; gap: 20px; }
-    .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 600; transition: var(--transition); }
-    .nav-links a:hover { color: var(--primary); }
-    @media (max-width: 768px) { .nav-links { display: none; } }
-
-    /* ==========================================================================
-       6. القسم الرئيسي (Hero Section)
-       ========================================================================== */
-    .hero {
-      display: flex; align-items: center; min-height: 70vh;
-      text-align: center; padding-top: 40px;
-    }
-    .hero-content { max-width: 800px; margin: 0 auto; }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(0, 210, 255, 0.1); border: 1px solid var(--border-glow);
-      color: var(--primary); padding: 6px 16px; border-radius: 50px;
-      font-size: 0.9rem; font-weight: 700; margin-bottom: 20px;
-    }
-    .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; line-height: 1.2; margin-bottom: 20px; }
-    .hero p { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 30px; line-height: 1.8; }
-    
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-      padding: 12px 28px; border-radius: 12px; font-weight: 700; font-size: 1.1rem;
-      text-decoration: none; transition: var(--transition); cursor: pointer; border: none;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff;
-      box-shadow: 0 8px 25px rgba(0, 210, 255, 0.25);
-    }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0, 210, 255, 0.4); }
-    .btn-secondary { background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); }
-    .btn-secondary:hover { background: var(--border); border-color: var(--text-muted); }
-
-    .hero-actions { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
-
-    /* ==========================================================================
-       7. شبكة الألعاب (قابل للتوسع بسهولة Grid System)
-       ========================================================================== */
-    .games-grid {
-      display: grid;
-      /* هذه القاعدة تجعل الموقع قابلاً لاستيعاب مئات الألعاب بشكل متناسق وتلقائي */
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 30px;
+    #intro-screen {
+      position: fixed; inset: 0; z-index: 999999;
+      background: var(--bg-dark); /* خلفية مظلمة تماماً */
+      display: grid; place-items: center;
+      overflow: hidden;
+      transition: opacity 0.8s ease;
     }
     
-    /* بطاقة اللعبة */
-    .game-card {
-      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
-      overflow: hidden; transition: var(--transition); display: flex; flex-direction: column;
+    /* الشعار والاسم (مخفيان في الظلام ويظهرهما الكشاف) */
+    .intro-brand {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 15px;
     }
-    .game-card:hover {
-      transform: translateY(-5px); border-color: var(--border-glow);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    .intro-logo-icon {
+      font-size: 6rem; color: #fff;
+      filter: drop-shadow(0 0 15px var(--primary-glow));
+    }
+    .intro-name {
+      font-family: 'Orbitron', sans-serif; font-size: clamp(3rem, 8vw, 4.5rem);
+      font-weight: 900; letter-spacing: 5px;
+      background: linear-gradient(90deg, #fff, var(--primary));
+      -webkit-background-clip: text; color: transparent;
+    }
+
+    /* الكشاف الضوئي المذهل */
+    .spotlight-mask {
+      position: absolute; top: 50%; left: 50%;
+      width: 300px; height: 300px;
+      margin: -150px 0 0 -150px; /* لجعله في المنتصف تماماً */
+      border-radius: 50%;
+      
+      /* لون الضوء من الداخل */
+      background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(0,240,255,0.05) 50%, transparent 70%);
+      
+      /* السحر هنا: ظل داخلي لنعومة حافة الضوء + ظل خارجي ضخم يغطي الشاشة بالظلام */
+      box-shadow: inset 0 0 40px 20px var(--bg-dark), 0 0 0 100vmax var(--bg-dark);
+      pointer-events: none; z-index: 2;
+      
+      /* الأنيميشن (حركة البحث ثم التركيز) */
+      animation: searchAndReveal 4.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes searchAndReveal {
+      0%   { transform: translate(-35vw, -35vh) scale(0.6); } /* يبحث في الأعلى يساراً */
+      20%  { transform: translate(35vw, -25vh) scale(0.7); }  /* يبحث في الأعلى يميناً */
+      40%  { transform: translate(25vw, 35vh) scale(0.6); }   /* يبحث في الأسفل يميناً */
+      60%  { transform: translate(-35vw, 25vh) scale(0.8); }  /* يبحث في الأسفل يساراً */
+      75%  { transform: translate(0, 0) scale(1.1); }         /* يجد الشعار في المنتصف! */
+      80%  { transform: translate(0, 0) scale(1.2); box-shadow: inset 0 0 40px 20px var(--bg-dark), 0 0 0 100vmax var(--bg-dark), inset 0 0 80px rgba(0,240,255,0.4); } /* يتوهج احتفالاً بالوجود */
+      90%  { transform: translate(0, 0) scale(1.2); }         /* يثبت قليلاً لتقرأ الاسم */
+      100% { transform: translate(0, 0) scale(40); opacity: 0; } /* يتسع ليضيء كل الموقع ويختفي */
+    }
+
+    /* ==========================================================================
+       3. الخلفية التفاعلية
+       ========================================================================== */
+    .ambient-bg {
+      position: fixed; inset: 0; z-index: -1;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+      -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+    }
+
+    .glow-orb { position: absolute; width: 60vw; height: 60vw; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: orbFloat 20s infinite alternate; }
+    .orb-1 { top: -20%; right: -10%; background: var(--primary); }
+    .orb-2 { bottom: -20%; left: -10%; background: var(--secondary); animation-delay: -10s; }
+    @keyframes orbFloat { 100% { transform: translate(-50px, 50px); } }
+
+    /* ==========================================================================
+       4. الهيكل والشريط العلوي
+       ========================================================================== */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+    
+    header {
+      position: sticky; top: 0; z-index: 1000; padding: 20px 0;
+      background: linear-gradient(to bottom, rgba(3,3,5,0.9), transparent);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     }
     
-    .game-image { width: 100%; height: 200px; position: relative; overflow: hidden; }
-    .game-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-    .game-card:hover .game-image img { transform: scale(1.05); }
-    .game-price {
-      position: absolute; top: 15px; left: 15px;
-      background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
-      padding: 5px 12px; border-radius: 8px; font-family: 'Orbitron', sans-serif;
-      color: var(--primary); font-weight: bold; border: 1px solid rgba(0, 210, 255, 0.2);
+    .navbar { display: flex; justify-content: space-between; align-items: center; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand-logo-box {
+      width: 45px; height: 45px; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 12px;
+      display: flex; justify-content: center; align-items: center;
     }
+    .brand-logo-box iconify-icon { font-size: 1.8rem; color: var(--primary); }
+    .brand-name { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; background: linear-gradient(90deg, #fff, var(--primary)); -webkit-background-clip: text; color: transparent; }
 
-    .game-content { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
-    .game-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 10px; }
-    .game-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; flex-grow: 1; }
+    /* ==========================================================================
+       5. القسم الرئيسي (Hero Section)
+       ========================================================================== */
+    .hero { min-height: 80vh; display: flex; align-items: center; position: relative; }
+    .hero-content { max-width: 800px; position: relative; z-index: 2; }
     
-    .game-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .btn-download {
-      display: flex; justify-content: center; align-items: center; gap: 8px;
-      padding: 10px; border-radius: 8px; font-weight: 700; font-size: 0.9rem;
-      text-decoration: none; transition: var(--transition);
-      background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border);
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 50px;
+      background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2);
+      color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.9rem;
+      margin-bottom: 25px; letter-spacing: 1px; text-transform: uppercase;
     }
-    .btn-download:hover { background: var(--primary); color: #000; border-color: var(--primary); }
+    .status-badge .dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); animation: blink 1.5s infinite; }
+    @keyframes blink { 50% { opacity: 0.3; } }
+
+    .hero h1 { font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; }
+    .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin-bottom: 40px; }
+
+    .btn-group { display: flex; gap: 15px; flex-wrap: wrap; }
+    .btn { display: inline-flex; justify-content: center; align-items: center; gap: 10px; padding: 16px 32px; border-radius: 14px; font-weight: 800; font-size: 1.1rem; text-decoration: none; transition: var(--transition); }
+    .btn-primary { background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.2); }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255,255,255,0.4); }
+    .btn-outline { background: rgba(255,255,255,0.03); color: #fff; border: 1px solid var(--border); backdrop-filter: blur(10px); }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
 
     /* ==========================================================================
-       8. قسم المميزات (لماذا منصتنا؟)
+       6. بطاقات الألعاب (إظهار الصورة كاملة)
        ========================================================================== */
-    .features-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px;
+    .section-title { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900; margin: 100px 0 40px; display: flex; align-items: center; gap: 15px; }
+    .section-title span { color: var(--primary); }
+
+    .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+
+    .spotlight-card {
+      position: relative; background: var(--bg-surface); border: 1px solid var(--border);
+      border-radius: 24px; overflow: hidden; display: flex; flex-direction: column;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     }
-    .feature-card {
-      background: var(--bg-card); padding: 30px 25px; border-radius: var(--radius);
-      border: 1px solid var(--border); text-align: center; transition: var(--transition);
+    
+    /* تأثير إضاءة الماوس */
+    .spotlight-card::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%); opacity: 0; transition: opacity 0.5s; }
+    .spotlight-card:hover::before { opacity: 1; }
+    .spotlight-card:hover { border-color: rgba(255,255,255,0.2); }
+
+    /* 🔴 عرض الصورة بالكامل دون قص */
+    .card-image-box {
+      width: 100%; height: 280px; position: relative; z-index: 1;
+      padding: 25px; display: flex; justify-content: center; align-items: center;
+      background: radial-gradient(circle at center, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6));
+      border-bottom: 1px solid var(--border);
     }
-    .feature-card:hover { background: var(--bg-card-hover); border-color: var(--text-muted); }
-    .feature-icon {
-      width: 60px; height: 60px; margin: 0 auto 20px; border-radius: 12px;
-      background: rgba(0, 210, 255, 0.1); color: var(--primary);
-      display: flex; justify-content: center; align-items: center; font-size: 1.8rem;
+    .card-image-box img {
+      width: 100%; height: 100%; object-fit: contain; /* لا يوجد أي قص للصورة */
+      filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8));
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .feature-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 10px; }
-    .feature-desc { color: var(--text-muted); font-size: 0.95rem; }
+    .spotlight-card:hover .card-image-box img { transform: scale(1.08) translateY(-5px); }
+
+    .price-tag { position: absolute; top: 20px; right: 20px; z-index: 2; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); border: 1px solid var(--primary); color: var(--primary); padding: 6px 14px; border-radius: 10px; font-family: 'Orbitron', sans-serif; font-weight: 700; }
+
+    .card-content { padding: 30px; position: relative; z-index: 1; flex-grow: 1; display: flex; flex-direction: column; }
+    .card-content h3 { font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; }
+    .card-content p { color: var(--text-muted); font-size: 1rem; margin-bottom: 25px; flex-grow: 1; line-height: 1.7; }
+
+    /* أزرار التحميل */
+    .download-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .dl-btn { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: #fff; text-decoration: none; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.1rem; transition: var(--transition); }
+    .dl-btn iconify-icon { font-size: 1.5rem; }
+    .dl-ios:hover { background: #fff; color: #000; border-color: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+    .dl-android:hover { background: #3ddc84; color: #000; border-color: #3ddc84; box-shadow: 0 0 20px rgba(61,220,132,0.3); }
 
     /* ==========================================================================
-       9. قسم التواصل ووسائل التواصل الاجتماعي
+       7. التواصل
        ========================================================================== */
-    .social-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;
-    }
-    .social-card {
-      display: flex; align-items: center; gap: 15px; padding: 20px;
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius); text-decoration: none; color: var(--text-main);
-      transition: var(--transition);
-    }
-    .social-card:hover { transform: translateY(-3px); border-color: var(--primary); background: var(--bg-card-hover); }
-    .social-card iconify-icon { font-size: 2rem; }
-    .social-info h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 2px; }
-    .social-info span { font-size: 0.85rem; color: var(--text-muted); }
+    .social-bento { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 80px; }
+    .social-item { padding: 30px; border-radius: 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 20px; text-decoration: none; color: #fff; }
+    .social-icon { width: 60px; height: 60px; border-radius: 16px; background: rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center; font-size: 2.2rem; border: 1px solid rgba(255,255,255,0.1); transition: var(--transition); }
+    .social-item h4 { font-size: 1.3rem; font-weight: 800; margin-bottom: 5px; }
+    .social-item p { color: var(--text-muted); font-size: 0.95rem; }
 
-    /* ألوان الأيقونات */
-    .tg-icon { color: #0088cc; }
-    .ig-icon { color: #e1306c; }
-    .fb-icon { color: #1877f2; }
-    .th-icon { color: #ffffff; }
+    .si-tg:hover { border-color: #0088cc; } .si-tg:hover .social-icon { background: #0088cc; color: #fff; border-color: #0088cc; box-shadow: 0 10px 30px rgba(0,136,204,0.4); }
+    .si-ig:hover { border-color: #e1306c; } .si-ig:hover .social-icon { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; border-color: transparent; box-shadow: 0 10px 30px rgba(225,48,108,0.4); }
+    .si-fb:hover { border-color: #1877f2; } .si-fb:hover .social-icon { background: #1877f2; color: #fff; border-color: #1877f2; box-shadow: 0 10px 30px rgba(24,119,242,0.4); }
+    .si-th:hover { border-color: #ffffff; } .si-th:hover .social-icon { background: #ffffff; color: #000; border-color: #ffffff; box-shadow: 0 10px 30px rgba(255,255,255,0.3); }
 
     /* ==========================================================================
-       10. الفوتر
+       8. الفوتر والأنيميشن
        ========================================================================== */
-    footer {
-      border-top: 1px solid var(--border); padding: 30px 0; text-align: center;
-      margin-top: 40px; background: rgba(11, 14, 20, 0.5);
-    }
-    .footer-text { color: var(--text-muted); font-size: 0.9rem; font-weight: 600; }
-
-    /* ==========================================================================
-       11. حركات التمرير (Scroll Reveal)
-       ========================================================================== */
-    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+    footer { padding: 40px 0; text-align: center; border-top: 1px solid var(--border); color: var(--text-muted); font-family: 'Rajdhani', sans-serif; font-size: 1rem; }
+    
+    .reveal { opacity: 0; transform: translateY(50px); transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
     .reveal.active { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
-  <!-- شاشة التحميل الافتتاحية -->
-  <div id="preloader">
-    <iconify-icon icon="solar:gamepad-bold" class="loader-logo"></iconify-icon>
-    <div class="loader-text">يتم تجهيز المنصة...</div>
+  <div id="intro-screen">
+    <div class="intro-brand">
+      <div class="intro-logo-icon"><iconify-icon icon="solar:gamepad-bold"></iconify-icon></div>
+      <div class="intro-name">PLAY ZONE</div>
+    </div>
+    <div class="spotlight-mask"></div>
   </div>
 
-  <!-- خلفية الموقع -->
-  <div class="site-background"></div>
+  <div class="ambient-bg"></div>
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
 
-  <!-- شريط التنقل -->
-  <header class="navbar">
-    <div class="container nav-container">
-      <a href="#" class="brand">
-        <iconify-icon icon="solar:gamepad-bold" class="brand-icon"></iconify-icon>
-        <span class="brand-name">PlayZone</span>
-      </a>
-      <nav class="nav-links">
-        <a href="#home">الرئيسية</a>
-        <a href="#games">مكتبة الألعاب</a>
-        <a href="#features">المميزات</a>
-        <a href="#contact">تواصل معنا</a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <!-- القسم الرئيسي -->
-    <section id="home" class="hero container">
-      <div class="hero-content reveal">
-        <div class="hero-badge">
-          <iconify-icon icon="solar:verified-check-bold"></iconify-icon> المنصة المعتمدة للألعاب
-        </div>
-        <h1>اكتشف وحمل أفضل الألعاب بسهولة وأمان</h1>
-        <p>مرحباً بك في PlayZone. نقدم لك مجموعة مختارة من الألعاب الممتعة بأسعار رمزية عبر بوت التيليجرام الرسمي الخاص بنا. تجربة تحميل سلسة، سريعة، وموثوقة.</p>
-        <div class="hero-actions">
-          <a href="#games" class="btn btn-primary">
-            <iconify-icon icon="solar:gamepad-bold"></iconify-icon> تصفح الألعاب
-          </a>
-          <a href="https://t.me/P1ay_Z0ne_Bot" class="btn btn-secondary" target="_blank">
-            <iconify-icon icon="mingcute:telegram-fill"></iconify-icon> فتح البوت
-          </a>
-        </div>
+  <div class="container">
+    <header>
+      <div class="navbar">
+        <a href="#" class="brand">
+          <div class="brand-logo-box"><iconify-icon icon="solar:gamepad-bold"></iconify-icon></div>
+          <span class="brand-name">Play Zone</span>
+        </a>
       </div>
-    </section>
+    </header>
 
-    <!-- قسم مكتبة الألعاب -->
-    <section id="games" class="container">
-      <div class="section-header reveal">
-        <h2 class="section-title">مكتبة الألعاب</h2>
-        <p class="section-desc">تصفح أحدث الألعاب المتوفرة لدينا. يتم إضافة ألعاب جديدة باستمرار لضمان تجربة متجددة.</p>
-      </div>
+    <main>
+      <section class="hero">
+        <div class="hero-content reveal">
+          <div class="status-badge"><span class="dot"></span> النظام متصل وجاهز</div>
+          <h1>العب. تحدَّ.<br> وانتصر الآن.</h1>
+          <p>أهلاً بك في منصة Play Zone الرسمية. ارتقِ بتجربة اللعب الخاصة بك مع تشكيلتنا الحصرية من ألعاب الموبايل. تجربة تحميل فائقة السرعة وأمان تام بضغطة زر.</p>
+          <div class="btn-group">
+            <a href="#games" class="btn btn-primary">
+              <iconify-icon icon="solar:gamepad-bold"></iconify-icon> تصفح الألعاب
+            </a>
+            <a href="https://t.me/P1ay_Z0ne_Bot" class="btn btn-outline" target="_blank">
+              <iconify-icon icon="mingcute:telegram-fill" style="color:var(--primary)"></iconify-icon> فتح البوت المباشر
+            </a>
+          </div>
+        </div>
+      </section>
 
-      <div class="games-grid">
+      <section id="games">
+        <h2 class="section-title reveal"><iconify-icon icon="solar:box-minimalistic-bold-duotone"></iconify-icon> <span>أبرز</span> الإصدارات</h2>
         
-        <!-- [ قالب بطاقة اللعبة الأول ] (يمكنك نسخ هذا القالب لإضافة ألعاب جديدة مستقبلاً) -->
-        <article class="game-card reveal">
-          <div class="game-image">
-            <img src="IMG1.PNG" alt="The Challenge" loading="lazy">
-            <div class="game-price">1000 IQD</div>
-          </div>
-          <div class="game-content">
-            <h3 class="game-title">The Challenge</h3>
-            <p class="game-desc">لعبة تحديات تتطلب التركيز وسرعة البديهة. اجتز المراحل التي تزداد صعوبة تدريجياً واختبر مهاراتك.</p>
-            <div class="game-actions">
-              <a href="https://t.me/P1ay_Z0ne_Bot" class="btn-download" target="_blank">
-                <iconify-icon icon="ic:baseline-apple" width="20"></iconify-icon> iPhone
-              </a>
-              <a href="https://t.me/P1ay_Z0ne_Bot" class="btn-download" target="_blank">
-                <iconify-icon icon="mdi:android" width="20"></iconify-icon> Android
-              </a>
+        <div class="games-grid">
+          <article class="spotlight-card reveal">
+            <div class="card-image-box">
+              <div class="price-tag">1000 IQD</div>
+              <img src="IMG1.PNG" alt="The Challenge" loading="lazy">
             </div>
-          </div>
-        </article>
-        <!-- [ نهاية قالب اللعبة ] -->
-
-        <!-- اللعبة الثانية -->
-        <article class="game-card reveal">
-          <div class="game-image">
-            <img src="IMG2.PNG" alt="Chicken Life" loading="lazy">
-            <div class="game-price">1000 IQD</div>
-          </div>
-          <div class="game-content">
-            <h3 class="game-title">Chicken Life</h3>
-            <p class="game-desc">عالم مرح ومليء بالمفاجآت. لعبة محاكاة وتحديات خفيفة مناسبة لتمضية وقت ممتع ومسلٍ.</p>
-            <div class="game-actions">
-              <a href="https://t.me/P1ay_Z0ne_Bot" class="btn-download" target="_blank">
-                <iconify-icon icon="ic:baseline-apple" width="20"></iconify-icon> iPhone
-              </a>
-              <a href="https://t.me/P1ay_Z0ne_Bot" class="btn-download" target="_blank">
-                <iconify-icon icon="mdi:android" width="20"></iconify-icon> Android
-              </a>
+            <div class="card-content">
+              <h3>The Challenge</h3>
+              <p>استعد لاختبار مهاراتك وردود أفعالك. لعبة مليئة بالتحديات والمراحل المعقدة التي تتطلب تركيزاً عالياً وسرعة بديهة.</p>
+              <div class="download-grid">
+                <a href="https://t.me/P1ay_Z0ne_Bot" class="dl-btn dl-ios" target="_blank"><iconify-icon icon="ic:baseline-apple"></iconify-icon> iOS</a>
+                <a href="https://t.me/P1ay_Z0ne_Bot" class="dl-btn dl-android" target="_blank"><iconify-icon icon="mdi:android"></iconify-icon> Android</a>
+              </div>
             </div>
-          </div>
-        </article>
+          </article>
 
-      </div>
-    </section>
-
-    <!-- قسم مميزات المنصة -->
-    <section id="features" class="container">
-      <div class="section-header reveal">
-        <h2 class="section-title">لماذا تختار PlayZone؟</h2>
-        <p class="section-desc">نحن لا نوفر الألعاب فقط، بل نحرص على تقديم بيئة متكاملة تضمن لك أفضل تجربة مستخدم.</p>
-      </div>
-
-      <div class="features-grid">
-        <div class="feature-card reveal">
-          <div class="feature-icon"><iconify-icon icon="solar:shield-check-bold"></iconify-icon></div>
-          <h3 class="feature-title">روابط آمنة</h3>
-          <p class="feature-desc">جميع الملفات والروابط يتم فحصها بدقة لضمان خلوها من أي برمجيات ضارة.</p>
+          <article class="spotlight-card reveal">
+            <div class="card-image-box">
+              <div class="price-tag">1000 IQD</div>
+              <img src="IMG2.PNG" alt="Chicken Life" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3>Chicken Life</h3>
+              <p>عالم مرح ومسلي! تقمص دور الدجاجة في بيئة مليئة بالمفاجآت والتحديات الخفيفة لتجربة لعب ممتعة ترسم البسمة.</p>
+              <div class="download-grid">
+                <a href="https://t.me/P1ay_Z0ne_Bot" class="dl-btn dl-ios" target="_blank"><iconify-icon icon="ic:baseline-apple"></iconify-icon> iOS</a>
+                <a href="https://t.me/P1ay_Z0ne_Bot" class="dl-btn dl-android" target="_blank"><iconify-icon icon="mdi:android"></iconify-icon> Android</a>
+              </div>
+            </div>
+          </article>
         </div>
+      </section>
+
+      <section id="social">
+        <h2 class="section-title reveal"><iconify-icon icon="solar:global-bold-duotone"></iconify-icon> <span>ابقَ</span> متصلاً</h2>
         
-        <div class="feature-card reveal">
-          <div class="feature-icon"><iconify-icon icon="solar:rocket-2-bold"></iconify-icon></div>
-          <h3 class="feature-title">تحميل سريع</h3>
-          <p class="feature-desc">سيرفرات البوت مصممة لتوفير روابط مباشرة تضمن لك سرعة تحميل عالية.</p>
+        <div class="social-bento">
+          <a href="https://t.me/P1ay_Z0ne_Bot" class="spotlight-card social-item si-tg reveal" target="_blank">
+            <div class="social-icon"><iconify-icon icon="mingcute:telegram-fill"></iconify-icon></div>
+            <div>
+              <h4>البوت الرسمي</h4>
+              <p>تنزيل سريع وآمن</p>
+            </div>
+          </a>
+
+          <a href="https://www.instagram.com/p1ay.zone?igsh=MW9uYTB1dTZxZnpocQ%3D%3D&utm_source=qr" class="spotlight-card social-item si-ig reveal" target="_blank">
+            <div class="social-icon"><iconify-icon icon="mdi:instagram"></iconify-icon></div>
+            <div>
+              <h4>إنستغرام</h4>
+              <p>نظرة خلف الكواليس</p>
+            </div>
+          </a>
+
+          <a href="https://www.facebook.com/share/1AiqxvzMpc/?mibextid=wwXIfr" class="spotlight-card social-item si-fb reveal" target="_blank">
+            <div class="social-icon"><iconify-icon icon="mdi:facebook"></iconify-icon></div>
+            <div>
+              <h4>فيسبوك</h4>
+              <p>مجتمع اللاعبين</p>
+            </div>
+          </a>
+
+          <a href="https://www.threads.com/@p1ay.zone?igshid=NTc4MTIwNjQ2YQ==" class="spotlight-card social-item si-th reveal" target="_blank">
+            <div class="social-icon"><iconify-icon icon="simple-icons:threads"></iconify-icon></div>
+            <div>
+              <h4>ثريدز</h4>
+              <p>آخر الأخبار العاجلة</p>
+            </div>
+          </a>
         </div>
+      </section>
+    </main>
 
-        <div class="feature-card reveal">
-          <div class="feature-icon"><iconify-icon icon="solar:devices-bold"></iconify-icon></div>
-          <h3 class="feature-title">دعم الأنظمة</h3>
-          <p class="feature-desc">ألعابنا متوافقة مع أنظمة Android و iOS لضمان استمتاع الجميع.</p>
-        </div>
-
-        <div class="feature-card reveal">
-          <div class="feature-icon"><iconify-icon icon="solar:headset-bold"></iconify-icon></div>
-          <h3 class="feature-title">تحديثات مستمرة</h3>
-          <p class="feature-desc">نعمل دائماً على تحديث مكتبة الألعاب وإضافة إصدارات جديدة بانتظام.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- قسم التواصل -->
-    <section id="contact" class="container">
-      <div class="section-header reveal">
-        <h2 class="section-title">ابقَ على تواصل</h2>
-        <p class="section-desc">انضم إلى مجتمعنا على وسائل التواصل الاجتماعي لمعرفة آخر التحديثات والألعاب الجديدة.</p>
-      </div>
-
-      <div class="social-grid">
-        <a href="https://t.me/P1ay_Z0ne_Bot" class="social-card reveal" target="_blank">
-          <iconify-icon icon="mingcute:telegram-fill" class="tg-icon"></iconify-icon>
-          <div class="social-info">
-            <h4>البوت الرسمي</h4>
-            <span>لتحميل الألعاب</span>
-          </div>
-        </a>
-
-        <a href="https://www.instagram.com/p1ay.zone?igsh=MW9uYTB1dTZxZnpocQ%3D%3D&utm_source=qr" class="social-card reveal" target="_blank">
-          <iconify-icon icon="mdi:instagram" class="ig-icon"></iconify-icon>
-          <div class="social-info">
-            <h4>إنستغرام</h4>
-            <span>أخبار وصور</span>
-          </div>
-        </a>
-
-        <a href="https://www.facebook.com/share/1AiqxvzMpc/?mibextid=wwXIfr" class="social-card reveal" target="_blank">
-          <iconify-icon icon="mdi:facebook" class="fb-icon"></iconify-icon>
-          <div class="social-info">
-            <h4>فيسبوك</h4>
-            <span>مجتمع اللاعبين</span>
-          </div>
-        </a>
-
-        <a href="https://www.threads.com/@p1ay.zone?igshid=NTc4MTIwNjQ2YQ==" class="social-card reveal" target="_blank">
-          <iconify-icon icon="simple-icons:threads" class="th-icon"></iconify-icon>
-          <div class="social-info">
-            <h4>ثريدز</h4>
-            <span>نقاشات سريعة</span>
-          </div>
-        </a>
-      </div>
-    </section>
-  </main>
-
-  <!-- الفوتر -->
-  <footer>
-    <div class="container">
-      <div class="footer-text">© 2026 PlayZone Platform — جميع الحقوق محفوظة</div>
-    </div>
-  </footer>
+    <footer>
+      PLAY ZONE © 2026. ENGINEERED FOR GAMERS.
+    </footer>
+  </div>
 
   <script>
-    /* ==========================================================================
-       منطق الجافاسكربت (بسيط، خفيف، واحترافي)
-       ========================================================================== */
-
-    // 1. إزالة شاشة التحميل الافتتاحية بسلاسة
     document.addEventListener("DOMContentLoaded", () => {
-      const preloader = document.getElementById('preloader');
-      
-      // الشاشة ستختفي بعد تحميل الصفحة كاملاً، أو بحد أقصى 1.5 ثانية
-      const hidePreloader = () => {
-        preloader.style.opacity = '0';
-        preloader.style.visibility = 'hidden';
-        // إزالة العنصر من الـ DOM لتخفيف الحمل على المتصفح
-        setTimeout(() => preloader.remove(), 500);
-      };
+      // 1. الدخولية (Spotlight Intro Cleanup)
+      // الكشاف يستغرق 4.5 ثواني لينهي حركته بالكامل
+      setTimeout(() => {
+        const intro = document.getElementById('intro-screen');
+        if(intro) {
+          intro.style.opacity = '0'; // التأكد من الإخفاء
+          setTimeout(() => intro.remove(), 800); // إزالة نهائية لتخفيف الموقع
+        }
+      }, 4500);
 
-      // ننتظر قليلاً لضمان رؤية تأثير الدخول
-      setTimeout(hidePreloader, 1000); 
-    });
-
-    // 2. تفعيل حركات التمرير (Scroll Animations)
-    // نستخدم IntersectionObserver لضمان الأداء العالي جداً مقارنة بـ window.onscroll
-    const revealElements = document.querySelectorAll('.reveal');
-    
-    const revealOptions = {
-      threshold: 0.1, // يبدأ التأثير عند ظهور 10% من العنصر
-      rootMargin: "0px 0px -50px 0px"
-    };
-
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('active');
-        // إيقاف مراقبة العنصر بعد ظهوره لتوفير الموارد
-        observer.unobserve(entry.target); 
+      // 2. إضاءة البطاقات (Spotlight Hover on Cards)
+      const cards = document.querySelectorAll('.spotlight-card');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+          card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+        });
       });
-    }, revealOptions);
 
-    revealElements.forEach(el => revealObserver.observe(el));
+      // 3. أنيميشن الظهور (Scroll Reveal)
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+
+      document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    });
   </script>
 </body>
 </html>
