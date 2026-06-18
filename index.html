@@ -1,395 +1,259 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PlayZone | عالم الألعاب</title>
-  <meta name="description" content="PlayZone - العب، تحدَّ، انتصر!" />
-  <meta name="theme-color" content="#070818" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Orbitron:wght@600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
   <style>
     :root {
-      --bg: #060718; --card: rgba(19, 24, 55, .85); --text: #f8faff; --muted: #a9b4df;
-      --cyan: #00eaff; --purple: #a855f7; --pink: #ff2aa3; --green: #27ff9d; --yellow: #ffd166;
-      --line: rgba(255,255,255,.12); --speed: .28s ease; --shadow: 0 28px 85px rgba(0,0,0,.55);
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #00eaff;
+      --accent: #a855f7;
+      --danger: #ef4444;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+    
     body {
-      min-height: 100vh; overflow-x: hidden; font-family: "Cairo", sans-serif;
-      color: var(--text); line-height: 1.6;
-      background: radial-gradient(circle at 15% 8%, rgba(0,234,255,.15), transparent 30%),
-                  radial-gradient(circle at 86% 16%, rgba(168,85,247,.12), transparent 30%),
-                  radial-gradient(circle at 50% 94%, rgba(39,255,157,.06), transparent 34%),
-                  linear-gradient(180deg, #050612 0%, #0a1028 48%, #050612 100%);
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
     }
-    body.en { direction: ltr; }
-    a { color: inherit; text-decoration: none; }
-    button { font-family: inherit; border: none; cursor: pointer; background: transparent; }
-    iconify-icon { display: inline-block; vertical-align: -0.15em; }
-    ::selection { background: var(--cyan); color: #02030a; }
 
-    /* Layout & UI */
-    .container { width: min(1180px, calc(100% - 28px)); margin-inline: auto; }
-    .site { position: relative; z-index: 2; }
-    .hide { display: none !important; }
+    /* شاشة التحميل مع زر الإلغاء */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      transition: opacity 0.5s;
+    }
     
-    /* Backgrounds & Glows */
-    .bg-grid { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .06; background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px); background-size: 48px 48px; mask-image: linear-gradient(to bottom, #000, transparent 85%); }
-    .cursor-glow { position: fixed; width: 380px; height: 380px; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 1; background: radial-gradient(circle, rgba(0,234,255,.10), transparent 65%); mix-blend-mode: screen; transition: left .1s, top .1s; }
+    .spinner {
+      font-size: 4rem;
+      color: var(--primary);
+      animation: spin 2s linear infinite;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    /* Intro Screen */
-    .intro { position: fixed; inset: 0; z-index: 99999; display: grid; place-items: center; overflow: hidden; background: radial-gradient(circle at 50% 35%, rgba(0,234,255,.22), transparent 34%), radial-gradient(circle at 74% 68%, rgba(168,85,247,.18), transparent 32%), linear-gradient(135deg, #03040f, #0c1030 58%, #050612); animation: introClose .9s ease forwards 3.4s; }
-    .intro-particles { position: absolute; inset: 0; overflow: hidden; }
-    .particle { position: absolute; width: 4px; height: 4px; border-radius: 50%; opacity: .6; animation: particleFloat 3s ease-in-out infinite; }
-    .intro-card { position: relative; z-index: 2; text-align: center; padding: 34px 18px; }
-    .intro-logo { width: 100px; height: 100px; margin: 0 auto 24px; display: grid; place-items: center; border-radius: 30px; color: #fff; background: radial-gradient(circle at 30% 20%, rgba(255,255,255,.5), transparent 25%), linear-gradient(135deg, var(--cyan), var(--purple) 50%, var(--pink)); box-shadow: 0 0 60px rgba(0,234,255,.3), 0 0 120px rgba(168,85,247,.2); animation: logoPulse 2s ease-in-out infinite; }
-    .intro-title, .gradient-text { font-family: "Orbitron", "Cairo", sans-serif; color: transparent; background: linear-gradient(90deg, var(--cyan), #fff, var(--purple), var(--pink)); background-size: 240% auto; -webkit-background-clip: text; background-clip: text; animation: shine 3s linear infinite; }
-    .intro-title { font-size: clamp(3rem, 11vw, 6.5rem); font-weight: 900; letter-spacing: 3px; margin-bottom: 16px; animation: shine 3s linear infinite, titlePop 1s ease both; }
-    .intro-subtitle { display: inline-flex; gap: 10px; font-size: clamp(1rem, 3.5vw, 1.5rem); font-weight: 800; margin-bottom: 24px; color: #fff; text-shadow: 0 0 16px rgba(0,234,255,.5); }
-    .intro-loader { width: min(300px, 75%); height: 8px; margin: 0 auto 16px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.08); overflow: hidden; }
-    .intro-loader span { display: block; width: 0%; height: 100%; background: linear-gradient(90deg, var(--cyan), var(--purple), var(--pink)); animation: loader 2.6s ease forwards; }
-    .intro-hint { color: var(--muted); font-size: .9rem; font-weight: 600; animation: blink 1.5s infinite; }
-    .btn-cancel { margin-top: 20px; padding: 8px 20px; border: 1px solid var(--pink); color: var(--pink); border-radius: 12px; font-weight: bold; transition: var(--speed); display: inline-flex; align-items: center; gap: 6px; }
-    .btn-cancel:hover { background: rgba(255,42,163,.15); }
+    .cancel-btn {
+      background: transparent;
+      border: 1px solid var(--danger);
+      color: var(--danger);
+      padding: 8px 24px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cancel-btn:hover { background: rgba(239, 68, 68, 0.1); }
 
-    /* Header */
-    header { position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--line); background: rgba(5,6,18,.85); backdrop-filter: blur(24px); }
-    .nav-wrap { min-height: 72px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; }
-    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 900; transition: var(--speed); }
-    .brand:hover { transform: scale(1.03); }
-    .brand-icon, .cta-icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 14px; color: #fff; background: radial-gradient(circle at 28% 24%, rgba(255,255,255,.55), transparent 22%), linear-gradient(135deg, var(--cyan), var(--purple) 50%, var(--pink)); box-shadow: 0 0 24px rgba(0,234,255,.25); }
-    .cta-icon { width: 90px; height: 90px; margin-bottom: 16px; border-radius: 26px; animation: logoPulse 3s infinite; }
-    nav { justify-self: center; display: flex; gap: 4px; padding: 6px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.04); }
-    nav a { display: inline-flex; gap: 6px; color: var(--muted); padding: 9px 14px; border-radius: 999px; font-size: .88rem; font-weight: 700; transition: var(--speed); white-space: nowrap; }
-    nav a:hover, nav a.active, .filter-btn.active, .filter-btn:hover { color: #06101a; background: var(--cyan); box-shadow: 0 0 18px rgba(0,234,255,.3); }
-    .nav-actions { justify-self: end; display: flex; gap: 8px; }
-    .lang-btn, .menu-btn { display: inline-flex; align-items: center; gap: 6px; height: 42px; padding: 0 14px; border: 1px solid var(--line); border-radius: 14px; color: var(--text); background: rgba(255,255,255,.05); font-weight: 700; transition: var(--speed); }
-    .lang-btn:hover, .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
-    .menu-btn { display: none; padding: 0; width: 42px; justify-content: center; }
+    /* الحاوية الرئيسية */
+    .container {
+      width: 100%;
+      max-width: 500px;
+      margin-top: 40px;
+    }
 
-    /* Sections & Buttons */
-    .section { padding: 80px 0; }
-    .section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: 40px; }
-    .section-kicker { display: inline-flex; align-items: center; gap: 8px; color: var(--green); font-weight: 800; margin-bottom: 8px; font-size: .95rem; }
-    .section-title { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; line-height: 1.15; }
-    .btn { min-height: 50px; display: inline-flex; align-items: center; gap: 9px; padding: 0 22px; border-radius: 16px; font-weight: 800; transition: var(--speed); white-space: nowrap; }
-    .btn:hover { transform: translateY(-4px); }
-    .btn-primary { color: #02040f; background: linear-gradient(135deg, var(--cyan), var(--green)); box-shadow: 0 14px 40px rgba(0,234,255,.22); }
-    .btn-secondary { color: var(--text); background: rgba(255,255,255,.06); border: 1px solid var(--line); }
+    /* ترويسة الموقع */
+    .header { text-align: center; margin-bottom: 40px; }
+    .logo-icon {
+      font-size: 4rem;
+      color: var(--primary);
+      filter: drop-shadow(0 0 15px rgba(0, 234, 255, 0.4));
+      margin-bottom: 10px;
+    }
+    .header h1 { font-weight: 900; font-size: 2rem; margin-bottom: 5px; }
+    .header p { color: var(--text-muted); font-size: 1rem; }
+
+    /* الأقسام (الألعاب والروابط) */
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+    }
+
+    /* بطاقات الألعاب */
+    .game-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      transition: transform 0.2s;
+    }
+    .game-card:hover { transform: translateY(-3px); border-color: var(--primary); }
     
-    /* Hero */
-    .hero { min-height: calc(100vh - 72px); display: grid; align-items: center; padding: 40px 0 60px; }
-    .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
-    .hero h1 { font-size: clamp(2.4rem, 6.5vw, 5rem); font-weight: 900; margin-bottom: 18px; line-height: 1.1; }
-    .hero-desc { color: var(--muted); max-width: 600px; margin-bottom: 24px; }
-    .hero-stats { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
-    .stat { flex: 1; min-width: 140px; display: flex; align-items: center; gap: 12px; padding: 14px 18px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.04); }
-    .stat-icon { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 12px; background: rgba(0,234,255,.12); color: var(--cyan); }
-    .stat strong { color: var(--cyan); font-family: "Orbitron", sans-serif; font-size: 1.2rem; }
-    .stat span { color: var(--muted); font-size: .82rem; }
-    .hero-visual { position: relative; min-height: 480px; }
-    .showcase { padding: 28px; border-radius: 32px; border: 1px solid rgba(255,255,255,.14); background: var(--card); box-shadow: var(--shadow); transform: rotateY(-5deg) rotateX(4deg); animation: visualFloat 5s infinite; position: relative; z-index: 2; overflow: hidden; }
-    .showcase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .showcase-item { padding: 16px; border-radius: 16px; background: rgba(0,0,0,.2); text-align: center; border: 1px solid rgba(255,255,255,.08); }
-    .showcase-item iconify-icon { font-size: 1.6rem; color: var(--cyan); display: block; margin-bottom: 6px; }
+    .game-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      object-fit: cover;
+      background: #334155;
+    }
 
-    /* Games */
-    .filter-btn { display: inline-flex; gap: 6px; padding: 9px 16px; border-radius: 99px; border: 1px solid var(--line); background: rgba(255,255,255,.04); color: var(--muted); font-weight: 700; transition: var(--speed); }
-    .games-showcase { display: grid; grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); gap: 24px; }
-    .game-card { border-radius: 24px; border: 1px solid var(--line); background: var(--card); overflow: hidden; transition: var(--speed); }
-    .game-card:hover { transform: translateY(-8px); border-color: rgba(0,234,255,.4); box-shadow: 0 24px 70px rgba(0,0,0,.4); }
-    .game-card-inner { display: grid; grid-template-columns: .45fr .55fr; min-height: 380px; }
-    .game-visual { position: relative; display: grid; place-items: center; padding: 24px; overflow: hidden; }
-    .game-cover-image { width: min(100%, 220px); height: 270px; object-fit: cover; border-radius: 24px; border: 1px solid rgba(255,255,255,.18); box-shadow: 0 24px 60px rgba(0,0,0,.38); z-index: 2; animation: iconBounce 3s infinite; }
-    .game-badges { position: absolute; top: 14px; right: 14px; left: 14px; display: flex; justify-content: space-between; z-index: 3; }
-    .game-badge { padding: 6px 10px; border-radius: 99px; background: rgba(0,0,0,.5); border: 1px solid rgba(255,255,255,.12); font-size: .78rem; font-weight: 700; backdrop-filter: blur(8px); }
-    .game-info { padding: 24px; display: flex; flex-direction: column; justify-content: center; }
-    .game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .game-title { font-size: 1.4rem; font-weight: 900; }
-    .game-price { color: var(--green); font-family: "Orbitron", sans-serif; font-weight: 800; font-size: .9rem; }
-    .game-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
-    .download-btn { padding: 12px; border-radius: 14px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05); font-weight: 700; font-size: .88rem; display: flex; align-items: center; justify-content: center; gap: 8px; transition: var(--speed); }
+    .game-info { flex: 1; }
+    .game-info h3 { font-size: 1.1rem; margin-bottom: 4px; }
+    .game-info p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 8px; }
     
-    /* Features & Steps */
-    .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-    .feature { padding: 22px; border-radius: 20px; border: 1px solid var(--line); background: rgba(255,255,255,.04); transition: var(--speed); }
-    .feature:hover, .step:hover { transform: translateY(-6px); border-color: rgba(0,234,255,.3); }
-    .feature-icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 14px; font-size: 1.4rem; margin-bottom: 14px; }
-    .cyan { color: var(--cyan); background: rgba(0,234,255,.12); } .purple { color: var(--purple); background: rgba(168,85,247,.12); } .pink { color: var(--pink); background: rgba(255,42,163,.12); } .green { color: var(--green); background: rgba(39,255,157,.12); } .yellow { color: var(--yellow); background: rgba(255,209,102,.12); }
-    .steps-timeline { display: flex; align-items: center; overflow-x: auto; padding: 20px 0; }
-    .step { flex: 1; text-align: center; padding: 24px 16px; border-radius: 20px; border: 1px solid var(--line); background: rgba(255,255,255,.04); position: relative; transition: var(--speed); }
-    .step-number { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: linear-gradient(135deg, var(--cyan), var(--purple)); font-weight: 900; }
-    .step-icon { width: 50px; height: 50px; margin: 0 auto 12px; display: grid; place-items: center; border-radius: 16px; background: rgba(0,234,255,.1); color: var(--cyan); font-size: 1.4rem; }
-    .step-connector { padding: 0 8px; color: var(--line); font-size: 1.2rem; }
+    .price-tag {
+      font-size: 0.85rem;
+      color: var(--primary);
+      font-weight: bold;
+    }
 
-    /* Animations & Utils */
-    @keyframes particleFloat { 0%, 100% { transform: translateY(0) scale(1); opacity: .6; } 50% { transform: translateY(-30px) scale(1.5); opacity: 1; } }
-    @keyframes logoPulse { 50% { transform: scale(1.08); box-shadow: 0 0 80px rgba(0,234,255,.4); } }
-    @keyframes introClose { to { opacity: 0; visibility: hidden; pointer-events: none; } }
-    @keyframes shine { to { background-position: 240% center; } }
-    @keyframes titlePop { from { opacity: 0; transform: scale(.88) translateY(16px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-    @keyframes loader { to { width: 100%; } }
-    @keyframes visualFloat { 50% { transform: rotateY(-2deg) rotateX(2deg) translateY(-14px); } }
-    @keyframes iconBounce { 50% { transform: translateY(-8px) scale(1.05); } }
+    .play-btn {
+      background: var(--primary);
+      color: #000;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
 
-    .reveal { opacity: 1; transform: none; }
-    .js .reveal { opacity: 0; transform: translateY(28px); transition: .7s ease; }
-    .js .reveal.active { opacity: 1; transform: translateY(0); }
-    
-    .toast { position: fixed; left: 50%; bottom: 22px; z-index: 5000; transform: translateX(-50%) translateY(140%); padding: 12px 18px; border: 1px solid rgba(0,234,255,.3); border-radius: 14px; background: rgba(5,6,18,.92); backdrop-filter: blur(14px); transition: .35s ease; font-weight: 700; }
-    .toast.show { transform: translateX(-50%) translateY(0); }
+    /* أزرار التواصل */
+    .social-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      background: var(--card);
+      padding: 16px;
+      border-radius: 16px;
+      margin-bottom: 12px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: bold;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: background 0.2s;
+    }
+    .social-btn:hover { background: rgba(255, 255, 255, 0.1); }
+    .social-icon { font-size: 1.5rem; }
 
-    /* Responsive */
-    @media (max-width: 1024px) { .features-grid { grid-template-columns: repeat(2, 1fr); } .games-showcase { grid-template-columns: 1fr; } }
-    @media (max-width: 780px) { .nav-wrap { grid-template-columns: auto 1fr auto; } nav { position: fixed; top: 80px; left: 14px; right: 14px; display: grid; border-radius: 20px; padding: 14px; background: rgba(5,6,18,.96); opacity: 0; pointer-events: none; transform: translateY(-16px); transition: .28s; } nav.open { opacity: 1; pointer-events: auto; transform: translateY(0); } .menu-btn { display: grid; } .hero-grid, .game-card-inner { grid-template-columns: 1fr; } .steps-timeline { flex-direction: column; gap: 12px; } .step-connector { transform: rotate(90deg); } .cursor-glow { display: none; } }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
   </style>
 </head>
-
 <body>
-  <div class="intro" id="introScreen" role="dialog" aria-label="شاشة التحميل">
-    <div class="intro-particles" id="introParticles"></div>
-    <div class="intro-card">
-      <div class="intro-logo"><iconify-icon icon="solar:gamepad-bold" width="64"></iconify-icon></div>
-      <div class="intro-title">PlayZone</div>
-      <div class="intro-subtitle">
-        <iconify-icon icon="solar:fire-bold"></iconify-icon>
-        <span data-i18n="intro_text">جاهز تدخل عالم التحديات؟</span>
-        <iconify-icon icon="solar:fire-bold"></iconify-icon>
-      </div>
-      <div class="intro-loader"><span></span></div>
-      <div class="intro-hint" data-i18n="intro_hint">جاري تجهيز...</div>
-      <button class="btn-cancel" id="cancelIntro" title="الغاء العملية"><iconify-icon icon="solar:close-circle-bold"></iconify-icon> الغاء</button>
-    </div>
+
+  <div id="loader">
+    <iconify-icon icon="solar:gamepad-bold" class="spinner"></iconify-icon>
+    <p>جاري التجهيز...</p>
+    <button class="cancel-btn" onclick="cancelLoader()">
+      <iconify-icon icon="solar:close-circle-bold"></iconify-icon> الغاء
+    </button>
   </div>
 
-  <div class="bg-grid" aria-hidden="true"></div>
-  <div class="cursor-glow" id="cursorGlow"></div>
-  <div class="toast" id="toast">تم تسجيل الزيارة</div>
-
-  <div class="site">
-    <header>
-      <div class="container nav-wrap">
-        <a href="#home" class="brand">
-          <span class="brand-icon"><iconify-icon icon="solar:gamepad-bold"></iconify-icon></span>
-          <span class="brand-name">PlayZone</span>
-        </a>
-        <nav id="nav">
-          <a href="#home" class="active" data-i18n="nav_home"><iconify-icon icon="solar:home-2-bold"></iconify-icon> الرئيسية</a>
-          <a href="#games" data-i18n="nav_games"><iconify-icon icon="solar:gamepad-bold"></iconify-icon> الألعاب</a>
-          <a href="#features" data-i18n="nav_features"><iconify-icon icon="solar:star-bold"></iconify-icon> المميزات</a>
-          <a href="#steps" data-i18n="nav_steps"><iconify-icon icon="solar:download-minimalistic-bold"></iconify-icon> التحميل</a>
-          <a href="#contact" data-i18n="nav_contact"><iconify-icon icon="solar:chat-round-dots-bold"></iconify-icon> تواصل</a>
-        </nav>
-        <div class="nav-actions">
-          <button class="lang-btn" id="langBtn"><iconify-icon icon="solar:global-bold"></iconify-icon> <span>EN</span></button>
-          <button class="menu-btn" id="menuBtn"><iconify-icon icon="solar:hamburger-menu-bold"></iconify-icon></button>
-        </div>
-      </div>
+  <div class="container">
+    <header class="header">
+      <iconify-icon icon="solar:gamepad-bold" class="logo-icon"></iconify-icon>
+      <h1>PlayZone</h1>
+      <p>العب. تحدَّ. انتصر!</p>
     </header>
 
-    <main>
-      <section class="hero" id="home">
-        <div class="container hero-grid">
-          <div class="hero-content">
-            <h1 class="reveal"><span data-i18n="hero_title_1">العب. تحدَّ.</span><br><span class="gradient-text" data-i18n="hero_title_2">انتصر!</span></h1>
-            <p class="hero-desc reveal" data-i18n="hero_desc">اكتشف أقوى ألعاب الموبايل واحصل على روابط التحميل فوراً عبر البوت. ألعاب مختارة بعناية، أسعار رمزية، وتجربة سلسة من البداية للنهاية!</p>
-            <div class="hero-actions reveal">
-              <a href="#games" class="btn btn-primary"><iconify-icon icon="solar:gamepad-bold"></iconify-icon> <span data-i18n="hero_cta">اكتشف الألعاب</span></a>
-              <a href="https://t.me/P1ay_Z0ne_Bot" class="btn btn-secondary"><iconify-icon icon="mingcute:telegram-fill"></iconify-icon> <span data-i18n="hero_bot">البوت الرسمي</span></a>
-            </div>
-            <div class="hero-stats reveal">
-              <div class="stat"><div class="stat-icon"><iconify-icon icon="solar:gamepad-bold"></iconify-icon></div><div><strong>02</strong> <span data-i18n="stat_games">لعبة متوفرة</span></div></div>
-              <div class="stat"><div class="stat-icon"><iconify-icon icon="solar:tag-price-bold"></iconify-icon></div><div><strong>1K</strong> <span data-i18n="stat_price">دينار عراقي فقط</span></div></div>
-            </div>
-          </div>
-          <div class="hero-visual reveal">
-            <div class="showcase" id="tiltCard">
-              <div class="showcase-grid">
-                <div class="showcase-item"><iconify-icon icon="solar:smartphone-bold"></iconify-icon><span data-i18n="hud_platform">الأجهزة</span><b>Android / iPhone</b></div>
-                <div class="showcase-item"><iconify-icon icon="mingcute:telegram-fill"></iconify-icon><span data-i18n="hud_access">التحميل</span><b>Telegram Bot</b></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    <h2 class="section-title"><iconify-icon icon="solar:fire-bold"></iconify-icon> الألعاب الحالية</h2>
+    
+    <div class="game-card">
+      <img src="IMG1.PNG" alt="The Challenge" class="game-img" loading="lazy">
+      <div class="game-info">
+        <h3>The Challenge</h3>
+        <p>لعبة تحديات نارية! ركّز، تفاعل بسرعة، واجتاز مراحل تزداد صعوبة. هل تقدر تكمل للنهاية؟ 🔥</p>
+        <div class="price-tag">1000 IQD</div>
+      </div>
+      <a href="https://t.me/P1ay_Z0ne_Bot" class="play-btn" target="_blank">
+        تحميل
+      </a>
+    </div>
 
-      <section class="section" id="games">
-        <div class="container">
-          <div class="section-head reveal">
-            <div>
-              <div class="section-kicker"><iconify-icon icon="solar:fire-bold"></iconify-icon> <span data-i18n="games_kicker">الألعاب الحالية</span></div>
-              <h2 class="section-title" data-i18n="games_title">اختر لعبتك وابدأ المغامرة</h2>
-              <p class="section-desc" data-i18n="games_desc">كل لعبة تم اختيارها بعناية. اضغط على جهازك وروح للبوت تحصل الرابط خلال ثواني!</p>
-            </div>
-            <div class="filter-bar">
-              <button class="filter-btn active" data-filter="all"><iconify-icon icon="solar:widget-bold"></iconify-icon> <span data-i18n="filter_all">الكل</span></button>
-              <button class="filter-btn" data-filter="adventure"><iconify-icon icon="solar:sword-bold"></iconify-icon> <span data-i18n="filter_adventure">مغامرة</span></button>
-              <button class="filter-btn" data-filter="simulation"><iconify-icon icon="solar:planet-bold"></iconify-icon> <span data-i18n="filter_simulation">محاكاة</span></button>
-            </div>
-          </div>
-          
-          <div class="games-showcase">
-            <article class="game-card reveal" data-category="adventure mobile">
-              <div class="game-card-inner">
-                <div class="game-visual">
-                  <img class="game-cover-image" src="IMG1.PNG" alt="The Challenge" loading="lazy">
-                  <div class="game-badges"><span class="game-badge hot" style="color:var(--yellow)"><iconify-icon icon="solar:fire-bold"></iconify-icon> <span data-i18n="badge_hot">رائجة</span></span></div>
-                </div>
-                <div class="game-info">
-                  <div class="game-header"><h3 class="game-title">The Challenge</h3><span class="game-price"><iconify-icon icon="solar:tag-price-bold"></iconify-icon> 1000 IQD</span></div>
-                  <p class="game-desc" data-i18n="game1_desc">لعبة تحديات نارية! ركّز، تفاعل بسرعة، واجتاز مراحل تزداد صعوبة. هل تقدر تكمل للنهاية؟ 🔥</p>
-                  <div class="game-actions">
-                    <a href="https://t.me/P1ay_Z0ne_Bot" class="download-btn" onclick="countVisit('the-challenge')"><iconify-icon icon="ic:baseline-apple"></iconify-icon> iPhone</a>
-                    <a href="https://t.me/P1ay_Z0ne_Bot" class="download-btn" onclick="countVisit('the-challenge')"><iconify-icon icon="mdi:android"></iconify-icon> Android</a>
-                  </div>
-                </div>
-              </div>
-            </article>
+    <div class="game-card">
+      <img src="IMG2.PNG" alt="Chicken Life" class="game-img" loading="lazy">
+      <div class="game-info">
+        <h3>Chicken Life</h3>
+        <p>عيش حياة الدجاجة! عالم مرح مليء بالمفاجآت والتحديات الخفيفة. لعبة تسلّيك وتضحّكك 🐔</p>
+        <div class="price-tag">1000 IQD</div>
+      </div>
+      <a href="https://t.me/P1ay_Z0ne_Bot" class="play-btn" target="_blank">
+        تحميل
+      </a>
+    </div>
 
-            <article class="game-card reveal" data-category="simulation mobile">
-              <div class="game-card-inner">
-                <div class="game-visual">
-                  <img class="game-cover-image" src="IMG2.PNG" alt="Chicken Life" loading="lazy" style="box-shadow: 0 24px 60px rgba(0,0,0,.38), 0 0 32px rgba(39,255,157,.14);">
-                  <div class="game-badges"><span class="game-badge new" style="color:var(--green)"><iconify-icon icon="solar:star-bold"></iconify-icon> <span data-i18n="badge_simulation">محاكاة</span></span></div>
-                </div>
-                <div class="game-info">
-                  <div class="game-header"><h3 class="game-title">Chicken Life</h3><span class="game-price"><iconify-icon icon="solar:tag-price-bold"></iconify-icon> 1000 IQD</span></div>
-                  <p class="game-desc" data-i18n="game2_desc">عيش حياة الدجاجة! عالم مرح مليء بالمفاجآت والتحديات الخفيفة. لعبة تسلّيك وتضحّكك 🐔</p>
-                  <div class="game-actions">
-                    <a href="https://t.me/P1ay_Z0ne_Bot" class="download-btn" onclick="countVisit('chicken-life')"><iconify-icon icon="ic:baseline-apple"></iconify-icon> iPhone</a>
-                    <a href="https://t.me/P1ay_Z0ne_Bot" class="download-btn" onclick="countVisit('chicken-life')"><iconify-icon icon="mdi:android"></iconify-icon> Android</a>
-                  </div>
-                </div>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
+    <br>
 
-      <section class="section" id="features">
-        <div class="container">
-          <div class="section-head reveal">
-            <div>
-              <div class="section-kicker"><iconify-icon icon="solar:star-bold"></iconify-icon> <span data-i18n="features_kicker">ليش PlayZone؟</span></div>
-              <h2 class="section-title" data-i18n="features_title">تجربة ألعاب ما مثلها تجربة</h2>
-            </div>
-          </div>
-          <div class="features-grid">
-            <div class="feature reveal"><div class="feature-icon cyan"><iconify-icon icon="solar:rocket-2-bold"></iconify-icon></div><h3 data-i18n="feature1_title">دخول سينمائي</h3><p data-i18n="feature1_desc">شاشة افتتاحية مذهلة تدخلك جو الألعاب من أول لحظة.</p></div>
-            <div class="feature reveal"><div class="feature-icon purple"><iconify-icon icon="solar:global-bold"></iconify-icon></div><h3 data-i18n="feature2_title">عربي + English</h3><p data-i18n="feature2_desc">بدّل اللغة بضغطة. الموقع يتكلم لغتك!</p></div>
-            <div class="feature reveal"><div class="feature-icon pink"><iconify-icon icon="solar:filter-bold"></iconify-icon></div><h3 data-i18n="feature3_title">تصنيف ذكي</h3><p data-i18n="feature3_desc">فلاتر سريعة تساعدك تلاقي نوع اللعبة اللي تحبها.</p></div>
-            <div class="feature reveal"><div class="feature-icon yellow"><iconify-icon icon="solar:bolt-bold"></iconify-icon></div><h3 data-i18n="feature5_title">تأثيرات خرافية</h3><p data-i18n="feature5_desc">حركات وتأثيرات تفاعلية تخلي التصفح ممتع.</p></div>
-          </div>
-        </div>
-      </section>
+    <h2 class="section-title"><iconify-icon icon="solar:chat-round-dots-bold"></iconify-icon> تواصل معنا</h2>
 
-      <section class="section" id="steps">
-        <div class="container">
-          <div class="section-head reveal">
-            <div>
-              <div class="section-kicker"><iconify-icon icon="solar:download-minimalistic-bold"></iconify-icon> <span data-i18n="steps_kicker">كيف تحمّل؟</span></div>
-              <h2 class="section-title" data-i18n="steps_title">4 خطوات وتبدأ تلعب</h2>
-            </div>
-          </div>
-          <div class="steps-timeline">
-            <div class="step reveal"><div class="step-number">1</div><div class="step-icon"><iconify-icon icon="solar:gamepad-bold"></iconify-icon></div><h3 data-i18n="step1_title">اختر لعبتك</h3></div>
-            <div class="step-connector reveal"><iconify-icon icon="solar:arrow-left-bold"></iconify-icon></div>
-            <div class="step reveal"><div class="step-number">2</div><div class="step-icon"><iconify-icon icon="solar:smartphone-bold"></iconify-icon></div><h3 data-i18n="step2_title">حدد جهازك</h3></div>
-            <div class="step-connector reveal"><iconify-icon icon="solar:arrow-left-bold"></iconify-icon></div>
-            <div class="step reveal"><div class="step-number">3</div><div class="step-icon"><iconify-icon icon="mingcute:telegram-fill"></iconify-icon></div><h3 data-i18n="step3_title">روح للبوت</h3></div>
-            <div class="step-connector reveal"><iconify-icon icon="solar:arrow-left-bold"></iconify-icon></div>
-            <div class="step reveal"><div class="step-number">4</div><div class="step-icon"><iconify-icon icon="solar:download-minimalistic-bold"></iconify-icon></div><h3 data-i18n="step4_title">حمّل والعب!</h3></div>
-          </div>
-        </div>
-      </section>
-    </main>
+    <a href="https://t.me/P1ay_Z0ne_Bot" class="social-btn" target="_blank">
+      <iconify-icon icon="mingcute:telegram-fill" class="social-icon" style="color: #0088cc;"></iconify-icon>
+      البوت الرسمي (Telegram)
+    </a>
 
-    <footer style="text-align: center; padding: 28px 0; border-top: 1px solid var(--line);">
-      <div class="footer-brand" style="font-weight: 900;"><iconify-icon icon="solar:gamepad-bold" style="color:var(--cyan)"></iconify-icon> PlayZone</div>
-      <div style="color:var(--muted); font-size:.88rem; margin-top:5px;" data-i18n="footer_text">© 2026 PlayZone — جميع الحقوق محفوظة</div>
+    <a href="https://www.instagram.com/p1ay.zone?igsh=MW9uYTB1dTZxZnpocQ%3D%3D&utm_source=qr" class="social-btn" target="_blank">
+      <iconify-icon icon="mdi:instagram" class="social-icon" style="color: #e1306c;"></iconify-icon>
+      حساب الإنستغرام
+    </a>
+
+    <a href="https://www.facebook.com/share/1AiqxvzMpc/?mibextid=wwXIfr" class="social-btn" target="_blank">
+      <iconify-icon icon="mdi:facebook" class="social-icon" style="color: #1877f2;"></iconify-icon>
+      صفحة الفيسبوك
+    </a>
+
+    <a href="https://www.threads.com/@p1ay.zone?igshid=NTc4MTIwNjQ2YQ==" class="social-btn" target="_blank">
+      <iconify-icon icon="simple-icons:threads" class="social-icon" style="color: #ffffff;"></iconify-icon>
+      حساب ثريدز (Threads)
+    </a>
+
+    <footer>
+      © 2026 PlayZone — جميع الحقوق محفوظة
     </footer>
   </div>
 
   <script>
-    document.documentElement.classList.add("js");
-    const dbUrl = "https://playzone-16197-default-rtdb.firebaseio.com";
+    const loader = document.getElementById('loader');
     
-    // إلغاء عملية التحميل الافتتاحية
-    document.getElementById("cancelIntro")?.addEventListener("click", () => {
-      document.getElementById("introScreen").style.display = "none";
-    });
-
-    // تبسيط نظام الزيارات لتخفيف الكود
-    window.countVisit = async (id) => {
-      try {
-        const res = await fetch(`${dbUrl}/downloads/${id}/total.json`);
-        const count = (await res.json()) || 0;
-        await fetch(`${dbUrl}/downloads/${id}/total.json`, { method: "PUT", body: JSON.stringify(count + 1) });
-        showToast(currentLang === "ar" ? "✅ تم تسجيل زيارتك!" : "✅ Visit counted!");
-      } catch (e) { showToast("⚠️ Error"); }
+    // دالة إخفاء شاشة التحميل
+    const hideLoader = () => {
+      loader.style.opacity = '0';
+      setTimeout(() => loader.style.display = 'none', 500);
     };
 
-    // القاموس وتغيير اللغة
-    const dict = {
-      ar: { intro_text: "جاهز تدخل عالم التحديات؟", intro_hint: "جاري تجهيز...", nav_home: "الرئيسية", nav_games: "الألعاب", nav_features: "المميزات", nav_steps: "التحميل", nav_contact: "تواصل", hero_title_1: "العب. تحدَّ.", hero_title_2: "انتصر!", hero_desc: "اكتشف أقوى ألعاب الموبايل واحصل على روابط التحميل فوراً عبر البوت. ألعاب مختارة بعناية، أسعار رمزية، وتجربة سلسة من البداية للنهاية!", hero_cta: "اكتشف الألعاب", hero_bot: "البوت الرسمي", stat_games: "لعبة متوفرة", stat_price: "دينار عراقي فقط", hud_platform: "الأجهزة", hud_access: "التحميل", games_kicker: "الألعاب الحالية", games_title: "اختر لعبتك وابدأ المغامرة", games_desc: "كل لعبة تم اختيارها بعناية. اضغط على جهازك وروح للبوت تحصل الرابط خلال ثواني!", filter_all: "الكل", filter_adventure: "مغامرة", filter_simulation: "محاكاة", badge_hot: "رائجة", badge_simulation: "محاكاة", game1_desc: "لعبة تحديات نارية! ركّز، تفاعل بسرعة، واجتاز مراحل تزداد صعوبة. هل تقدر تكمل للنهاية؟ 🔥", game2_desc: "عيش حياة الدجاجة! عالم مرح مليء بالمفاجآت والتحديات الخفيفة. لعبة تسلّيك وتضحّكك 🐔", features_kicker: "ليش PlayZone؟", features_title: "تجربة ألعاب ما مثلها تجربة", feature1_title: "دخول سينمائي", feature1_desc: "شاشة افتتاحية مذهلة تدخلك جو الألعاب من أول لحظة.", feature2_title: "عربي + English", feature2_desc: "بدّل اللغة بضغطة. الموقع يتكلم لغتك!", feature3_title: "تصنيف ذكي", feature3_desc: "فلاتر سريعة تساعدك تلاقي نوع اللعبة اللي تحبها.", feature5_title: "تأثيرات خرافية", feature5_desc: "حركات وتأثيرات تفاعلية تخلي التصفح ممتع.", steps_kicker: "كيف تحمّل؟", steps_title: "4 خطوات وتبدأ تلعب", step1_title: "اختر لعبتك", step2_title: "حدد جهازك", step3_title: "روح للبوت", step4_title: "حمّل والعب!", footer_text: "© 2026 PlayZone — جميع الحقوق محفوظة" },
-      en: { intro_text: "Ready to enter the arena?", intro_hint: "Preparing...", nav_home: "Home", nav_games: "Games", nav_features: "Features", nav_steps: "Download", nav_contact: "Contact", hero_title_1: "Play. Challenge.", hero_title_2: "Win!", hero_desc: "Discover the best mobile games and get download links instantly via our bot.", hero_cta: "Explore Games", hero_bot: "Official Bot", stat_games: "Games available", stat_price: "IQD only", hud_platform: "Devices", hud_access: "Download", games_kicker: "Current Games", games_title: "Pick your game & start the adventure", games_desc: "Every game is handpicked. Tap your device and head to the bot!", filter_all: "All", filter_adventure: "Adventure", filter_simulation: "Simulation", badge_hot: "Trending", badge_simulation: "Simulation", game1_desc: "A fiery challenge game! Focus, react fast, and pass through increasingly difficult stages.", game2_desc: "Live the chicken life! A fun world full of surprises and light challenges.", features_kicker: "Why PlayZone?", features_title: "A gaming experience like no other", feature1_title: "Cinematic Entry", feature1_desc: "An amazing intro screen.", feature2_title: "Arabic + English", feature2_desc: "Switch language with one tap.", feature3_title: "Smart Filters", feature3_desc: "Quick filters help you.", feature5_title: "Epic Effects", feature5_desc: "Interactive animations.", steps_kicker: "How to Download?", steps_title: "4 steps and start playing", step1_title: "Choose game", step2_title: "Select device", step3_title: "Go to Bot", step4_title: "Download & Play!", footer_text: "© 2026 PlayZone — All rights reserved" }
-    };
-    
-    let currentLang = localStorage.getItem("pz_lang") || "ar";
-    const applyLang = (lang) => {
-      currentLang = lang; localStorage.setItem("pz_lang", lang);
-      document.documentElement.lang = lang; document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-      document.querySelectorAll("[data-i18n]").forEach(el => {
-        if(dict[lang][el.dataset.i18n]) el.innerHTML = el.innerHTML.replace(el.textContent.trim(), dict[lang][el.dataset.i18n]);
-      });
-      document.querySelector("#langBtn span").textContent = lang === "ar" ? "EN" : "AR";
-    };
-    document.getElementById("langBtn").addEventListener("click", () => applyLang(currentLang === "ar" ? "en" : "ar"));
-    applyLang(currentLang);
+    // إخفاء التحميل تلقائياً بعد ثانيتين
+    let loadTimeout = setTimeout(hideLoader, 2000);
 
-    // واجهة القوائم والفلترة
-    const nav = document.getElementById("nav");
-    document.getElementById("menuBtn").addEventListener("click", () => nav.classList.toggle("open"));
-    document.querySelectorAll(".filter-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        const f = btn.dataset.filter;
-        document.querySelectorAll(".game-card").forEach(c => c.classList.toggle("hide", f !== "all" && !c.dataset.category.includes(f)));
-      });
-    });
-
-    // تأثيرات الماوس والشاشة
-    if(window.matchMedia("(pointer: fine)").matches) {
-      window.addEventListener("mousemove", e => {
-        requestAnimationFrame(() => {
-          const g = document.getElementById("cursorGlow");
-          if(g) { g.style.left = e.clientX + "px"; g.style.top = e.clientY + "px"; }
-        });
-      });
-    }
-
-    const obs = new IntersectionObserver(e => e.forEach(en => en.isIntersecting && en.target.classList.add("active")), { threshold: 0.08 });
-    document.querySelectorAll(".reveal").forEach(el => obs.observe(el));
-
-    // الجزيئات
-    const pContainer = document.getElementById("introParticles");
-    if(pContainer) {
-      for(let i=0; i<15; i++) {
-        let p = document.createElement("div"); p.className = "particle";
-        p.style.cssText = `left:${Math.random()*100}%; top:${Math.random()*100}%; animation-delay:${Math.random()*3}s; animation-duration:${2+Math.random()*2}s; background:var(--cyan)`;
-        pContainer.appendChild(p);
-      }
-    }
-
-    function showToast(msg) {
-      const t = document.getElementById("toast"); t.textContent = msg; t.classList.add("show");
-      setTimeout(() => t.classList.remove("show"), 2500);
+    // دالة الإلغاء اليدوي (توقف العملية النشطة فوراً)
+    function cancelLoader() {
+      clearTimeout(loadTimeout);
+      hideLoader();
     }
   </script>
 </body>
