@@ -3,29 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Play Zone | عالم الألعاب</title>
-  <meta name="description" content="Play Zone - اكتشف وحمل أفضل ألعاب الموبايل.">
-  <meta name="theme-color" content="#030305" />
+  <title>Play Zone | منصة الألعاب الرقمية</title>
+  <meta name="description" content="منصة Play Zone - بوابتك لاكتشاف وتحميل أفضل ألعاب الموبايل بسرعة وأمان.">
+  <meta name="theme-color" content="#050508" />
   
+  <!-- خطوط عصرية وفخمة (Alexandria للعربي + Orbitron للإنجليزي) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;600;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
   
+  <!-- مكتبة الأيقونات -->
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 
   <style>
     /* ==========================================================================
-       1. المتغيرات والألوان
+       1. المتغيرات والألوان (Cyber-Glassmorphism)
        ========================================================================== */
     :root {
-      --bg-dark: #030305;
-      --bg-surface: rgba(20, 22, 30, 0.5);
+      --bg-dark: #050508;
+      --bg-surface: rgba(20, 22, 30, 0.4);
       --primary: #00f0ff;
       --primary-glow: rgba(0, 240, 255, 0.4);
       --secondary: #7000ff;
       --text-main: #ffffff;
       --text-muted: #8b949e;
-      --border: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.06);
       --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -35,64 +37,71 @@
     body {
       background-color: var(--bg-dark);
       color: var(--text-main);
-      font-family: 'Cairo', sans-serif;
+      font-family: 'Alexandria', sans-serif; /* الخط الجديد */
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* ==========================================================================
-       2. فكرتك السينمائية: الكشاف الضوئي (Spotlight Intro)
+       2. الدخولية السينمائية (Spotlight Search & Reveal)
        ========================================================================== */
     #intro-screen {
       position: fixed; inset: 0; z-index: 999999;
-      background: var(--bg-dark); /* خلفية مظلمة تماماً */
+      background: var(--bg-dark);
       display: grid; place-items: center;
       overflow: hidden;
       transition: opacity 0.8s ease;
     }
     
-    /* الشعار والاسم (مخفيان في الظلام ويظهرهما الكشاف) */
+    /* الشعار والاسم (مخفيان في البداية، ويظهران فقط عند استقرار الكشاف) */
     .intro-brand {
       position: relative; z-index: 1;
       display: flex; flex-direction: column; align-items: center; gap: 15px;
+      opacity: 0;
+      transform: scale(0.9);
+      filter: blur(10px);
+      /* يظهر بعد 3.2 ثانية (لحظة وصول الكشاف للمنتصف) */
+      animation: revealBrand 0.8s 3.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
+    
+    @keyframes revealBrand {
+      100% { opacity: 1; transform: scale(1); filter: blur(0); }
+    }
+
     .intro-logo-icon {
       font-size: 6rem; color: #fff;
-      filter: drop-shadow(0 0 15px var(--primary-glow));
+      filter: drop-shadow(0 0 20px var(--primary-glow));
     }
     .intro-name {
-      font-family: 'Orbitron', sans-serif; font-size: clamp(3rem, 8vw, 4.5rem);
-      font-weight: 900; letter-spacing: 5px;
-      background: linear-gradient(90deg, #fff, var(--primary));
+      font-family: 'Orbitron', sans-serif; font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 900; letter-spacing: 6px;
+      background: linear-gradient(135deg, #fff 40%, var(--primary));
       -webkit-background-clip: text; color: transparent;
     }
 
     /* الكشاف الضوئي المذهل */
     .spotlight-mask {
       position: absolute; top: 50%; left: 50%;
-      width: 300px; height: 300px;
-      margin: -150px 0 0 -150px; /* لجعله في المنتصف تماماً */
+      width: 250px; height: 250px;
+      margin: -125px 0 0 -125px;
       border-radius: 50%;
-      
-      /* لون الضوء من الداخل */
-      background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(0,240,255,0.05) 50%, transparent 70%);
-      
-      /* السحر هنا: ظل داخلي لنعومة حافة الضوء + ظل خارجي ضخم يغطي الشاشة بالظلام */
-      box-shadow: inset 0 0 40px 20px var(--bg-dark), 0 0 0 100vmax var(--bg-dark);
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+      /* إخفاء باقي الشاشة بظل أسود عملاق */
+      box-shadow: inset 0 0 30px 15px var(--bg-dark), 0 0 0 150vmax var(--bg-dark);
       pointer-events: none; z-index: 2;
-      
-      /* الأنيميشن (حركة البحث ثم التركيز) */
-      animation: searchAndReveal 4.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      will-change: transform, box-shadow;
+      animation: searchSpotlight 4.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
 
-    @keyframes searchAndReveal {
-      0%   { transform: translate(-35vw, -35vh) scale(0.6); } /* يبحث في الأعلى يساراً */
-      20%  { transform: translate(35vw, -25vh) scale(0.7); }  /* يبحث في الأعلى يميناً */
-      40%  { transform: translate(25vw, 35vh) scale(0.6); }   /* يبحث في الأسفل يميناً */
-      60%  { transform: translate(-35vw, 25vh) scale(0.8); }  /* يبحث في الأسفل يساراً */
-      75%  { transform: translate(0, 0) scale(1.1); }         /* يجد الشعار في المنتصف! */
-      80%  { transform: translate(0, 0) scale(1.2); box-shadow: inset 0 0 40px 20px var(--bg-dark), 0 0 0 100vmax var(--bg-dark), inset 0 0 80px rgba(0,240,255,0.4); } /* يتوهج احتفالاً بالوجود */
-      90%  { transform: translate(0, 0) scale(1.2); }         /* يثبت قليلاً لتقرأ الاسم */
-      100% { transform: translate(0, 0) scale(40); opacity: 0; } /* يتسع ليضيء كل الموقع ويختفي */
+    @keyframes searchSpotlight {
+      0%   { transform: translate(-30vw, -30vh) scale(0.5); }
+      20%  { transform: translate(30vw, -20vh) scale(0.7); }
+      40%  { transform: translate(20vw, 30vh) scale(0.5); }
+      60%  { transform: translate(-30vw, 20vh) scale(0.6); }
+      75%  { transform: translate(0, 0) scale(1.1); box-shadow: inset 0 0 30px 15px var(--bg-dark), 0 0 0 150vmax var(--bg-dark); }
+      80%  { transform: translate(0, 0) scale(1.3); box-shadow: inset 0 0 30px 15px var(--bg-dark), 0 0 0 150vmax var(--bg-dark), inset 0 0 80px rgba(0,240,255,0.3); } /* لمعة بسيطة */
+      90%  { transform: translate(0, 0) scale(1.3); opacity: 1; }
+      100% { transform: translate(0, 0) scale(30); opacity: 0; display: none; }
     }
 
     /* ==========================================================================
@@ -100,134 +109,173 @@
        ========================================================================== */
     .ambient-bg {
       position: fixed; inset: 0; z-index: -1;
-      background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 50px 50px;
-      mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-      -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(circle at top, black 30%, transparent 80%);
+      -webkit-mask-image: radial-gradient(circle at top, black 30%, transparent 80%);
     }
 
-    .glow-orb { position: absolute; width: 60vw; height: 60vw; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: orbFloat 20s infinite alternate; }
-    .orb-1 { top: -20%; right: -10%; background: var(--primary); }
-    .orb-2 { bottom: -20%; left: -10%; background: var(--secondary); animation-delay: -10s; }
+    .glow-orb {
+      position: fixed; width: 50vw; height: 50vw; border-radius: 50%;
+      filter: blur(150px); opacity: 0.12; pointer-events: none;
+      animation: orbFloat 25s infinite alternate ease-in-out;
+    }
+    .orb-1 { top: -10%; right: -10%; background: var(--primary); }
+    .orb-2 { bottom: -10%; left: -10%; background: var(--secondary); animation-delay: -12s; }
     @keyframes orbFloat { 100% { transform: translate(-50px, 50px); } }
 
     /* ==========================================================================
-       4. الهيكل والشريط العلوي
+       4. الشريط العلوي (Header)
        ========================================================================== */
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
     
     header {
       position: sticky; top: 0; z-index: 1000; padding: 20px 0;
-      background: linear-gradient(to bottom, rgba(3,3,5,0.9), transparent);
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, rgba(5,5,8,0.95), transparent);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     }
     
     .navbar { display: flex; justify-content: space-between; align-items: center; }
     .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
     .brand-logo-box {
-      width: 45px; height: 45px; background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border); border-radius: 12px;
+      width: 42px; height: 42px; background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border); border-radius: 10px;
       display: flex; justify-content: center; align-items: center;
     }
-    .brand-logo-box iconify-icon { font-size: 1.8rem; color: var(--primary); }
-    .brand-name { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; background: linear-gradient(90deg, #fff, var(--primary)); -webkit-background-clip: text; color: transparent; }
+    .brand-logo-box iconify-icon { font-size: 1.6rem; color: var(--primary); }
+    .brand-name {
+      font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 900;
+      background: linear-gradient(90deg, #fff, var(--primary)); -webkit-background-clip: text; color: transparent;
+      letter-spacing: 1px;
+    }
 
     /* ==========================================================================
        5. القسم الرئيسي (Hero Section)
        ========================================================================== */
-    .hero { min-height: 80vh; display: flex; align-items: center; position: relative; }
-    .hero-content { max-width: 800px; position: relative; z-index: 2; }
+    .hero { min-height: 75vh; display: flex; align-items: center; position: relative; padding-top: 40px; }
+    .hero-content { max-width: 700px; position: relative; z-index: 2; }
     
     .status-badge {
-      display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 50px;
-      background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2);
-      color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.9rem;
-      margin-bottom: 25px; letter-spacing: 1px; text-transform: uppercase;
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 50px;
+      background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.2);
+      color: var(--primary); font-weight: 600; font-size: 0.85rem;
+      margin-bottom: 25px; letter-spacing: 0.5px;
     }
-    .status-badge .dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); animation: blink 1.5s infinite; }
+    .status-badge .dot { width: 6px; height: 6px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); animation: blink 1.5s infinite; }
     @keyframes blink { 50% { opacity: 0.3; } }
 
-    .hero h1 { font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; }
-    .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin-bottom: 40px; }
+    .hero h1 { font-size: clamp(2.5rem, 5.5vw, 4.5rem); font-weight: 900; line-height: 1.2; margin-bottom: 20px; }
+    .hero p { font-size: 1.1rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 40px; }
 
     .btn-group { display: flex; gap: 15px; flex-wrap: wrap; }
-    .btn { display: inline-flex; justify-content: center; align-items: center; gap: 10px; padding: 16px 32px; border-radius: 14px; font-weight: 800; font-size: 1.1rem; text-decoration: none; transition: var(--transition); }
-    .btn-primary { background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.2); }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255,255,255,0.4); }
-    .btn-outline { background: rgba(255,255,255,0.03); color: #fff; border: 1px solid var(--border); backdrop-filter: blur(10px); }
-    .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+    .btn {
+      display: inline-flex; justify-content: center; align-items: center; gap: 10px;
+      padding: 14px 28px; border-radius: 12px; font-weight: 800; font-size: 1rem;
+      text-decoration: none; transition: var(--transition);
+    }
+    .btn-primary { background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(255,255,255,0.3); }
+    .btn-outline { background: rgba(255,255,255,0.02); color: #fff; border: 1px solid var(--border); backdrop-filter: blur(10px); }
+    .btn-outline:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
 
     /* ==========================================================================
-       6. بطاقات الألعاب (إظهار الصورة كاملة)
+       6. بطاقات الألعاب (إظهار الصورة كاملة + إضاءة الماوس)
        ========================================================================== */
-    .section-title { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900; margin: 100px 0 40px; display: flex; align-items: center; gap: 15px; }
+    .section-title { font-size: 2.2rem; font-weight: 900; margin: 80px 0 40px; display: flex; align-items: center; gap: 15px; }
     .section-title span { color: var(--primary); }
 
-    .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+    .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
 
     .spotlight-card {
       position: relative; background: var(--bg-surface); border: 1px solid var(--border);
-      border-radius: 24px; overflow: hidden; display: flex; flex-direction: column;
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-radius: 20px; overflow: hidden; display: flex; flex-direction: column;
+      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+      transition: border-color 0.4s ease;
     }
     
-    /* تأثير إضاءة الماوس */
-    .spotlight-card::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%); opacity: 0; transition: opacity 0.5s; }
-    .spotlight-card:hover::before { opacity: 1; }
-    .spotlight-card:hover { border-color: rgba(255,255,255,0.2); }
+    /* إضاءة الماوس تعمل فقط في الأجهزة الداعمة للماوس (تجنب مشاكل اللمس) */
+    @media (hover: hover) {
+      .spotlight-card::before {
+        content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+        background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%);
+        opacity: 0; transition: opacity 0.5s;
+      }
+      .spotlight-card:hover::before { opacity: 1; }
+      .spotlight-card:hover { border-color: rgba(255,255,255,0.15); }
+    }
 
-    /* 🔴 عرض الصورة بالكامل دون قص */
+    /* عرض الصورة بالكامل دون قص */
     .card-image-box {
-      width: 100%; height: 280px; position: relative; z-index: 1;
-      padding: 25px; display: flex; justify-content: center; align-items: center;
-      background: radial-gradient(circle at center, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6));
+      width: 100%; height: 260px; position: relative; z-index: 1;
+      padding: 30px; display: flex; justify-content: center; align-items: center;
+      background: radial-gradient(circle at top, rgba(0, 240, 255, 0.03), transparent);
       border-bottom: 1px solid var(--border);
     }
     .card-image-box img {
-      width: 100%; height: 100%; object-fit: contain; /* لا يوجد أي قص للصورة */
-      filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8));
+      width: 100%; height: 100%; object-fit: contain; /* إظهار الصورة بالكامل */
+      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6));
       transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .spotlight-card:hover .card-image-box img { transform: scale(1.08) translateY(-5px); }
+    .spotlight-card:hover .card-image-box img { transform: scale(1.05) translateY(-5px); }
 
-    .price-tag { position: absolute; top: 20px; right: 20px; z-index: 2; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); border: 1px solid var(--primary); color: var(--primary); padding: 6px 14px; border-radius: 10px; font-family: 'Orbitron', sans-serif; font-weight: 700; }
+    .price-tag {
+      position: absolute; top: 15px; right: 15px; z-index: 2;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
+      border: 1px solid rgba(0, 240, 255, 0.3); color: var(--primary);
+      padding: 5px 12px; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9rem;
+    }
 
-    .card-content { padding: 30px; position: relative; z-index: 1; flex-grow: 1; display: flex; flex-direction: column; }
-    .card-content h3 { font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; }
-    .card-content p { color: var(--text-muted); font-size: 1rem; margin-bottom: 25px; flex-grow: 1; line-height: 1.7; }
+    .card-content { padding: 25px; position: relative; z-index: 1; flex-grow: 1; display: flex; flex-direction: column; }
+    .card-content h3 { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 900; margin-bottom: 10px; }
+    .card-content p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px; flex-grow: 1; line-height: 1.6; }
 
-    /* أزرار التحميل */
-    .download-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-    .dl-btn { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: #fff; text-decoration: none; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.1rem; transition: var(--transition); }
-    .dl-btn iconify-icon { font-size: 1.5rem; }
-    .dl-ios:hover { background: #fff; color: #000; border-color: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.3); }
-    .dl-android:hover { background: #3ddc84; color: #000; border-color: #3ddc84; box-shadow: 0 0 20px rgba(61,220,132,0.3); }
+    /* أزرار التحميل المخصصة */
+    .download-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .dl-btn {
+      display: flex; justify-content: center; align-items: center; gap: 8px;
+      padding: 10px; border-radius: 10px; background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border); color: #fff; text-decoration: none;
+      font-weight: 800; font-size: 0.95rem; transition: var(--transition);
+    }
+    .dl-btn iconify-icon { font-size: 1.3rem; }
+    .dl-ios:hover { background: #f8faff; color: #000; border-color: #f8faff; box-shadow: 0 0 15px rgba(255,255,255,0.2); }
+    .dl-android:hover { background: #3ddc84; color: #000; border-color: #3ddc84; box-shadow: 0 0 15px rgba(61,220,132,0.2); }
 
     /* ==========================================================================
        7. التواصل
        ========================================================================== */
-    .social-bento { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 80px; }
-    .social-item { padding: 30px; border-radius: 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 20px; text-decoration: none; color: #fff; }
-    .social-icon { width: 60px; height: 60px; border-radius: 16px; background: rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center; font-size: 2.2rem; border: 1px solid rgba(255,255,255,0.1); transition: var(--transition); }
-    .social-item h4 { font-size: 1.3rem; font-weight: 800; margin-bottom: 5px; }
-    .social-item p { color: var(--text-muted); font-size: 0.95rem; }
+    .social-bento { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 80px; }
+    .social-item {
+      padding: 25px; border-radius: 20px; display: flex; flex-direction: column; align-items: flex-start; gap: 15px;
+      text-decoration: none; color: #fff;
+    }
+    .social-icon {
+      width: 50px; height: 50px; border-radius: 14px; background: rgba(255,255,255,0.04);
+      display: flex; justify-content: center; align-items: center; font-size: 1.8rem;
+      border: 1px solid rgba(255,255,255,0.08); transition: var(--transition);
+    }
+    .social-item h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 2px; }
+    .social-item p { color: var(--text-muted); font-size: 0.85rem; font-weight: 600;}
 
-    .si-tg:hover { border-color: #0088cc; } .si-tg:hover .social-icon { background: #0088cc; color: #fff; border-color: #0088cc; box-shadow: 0 10px 30px rgba(0,136,204,0.4); }
-    .si-ig:hover { border-color: #e1306c; } .si-ig:hover .social-icon { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; border-color: transparent; box-shadow: 0 10px 30px rgba(225,48,108,0.4); }
-    .si-fb:hover { border-color: #1877f2; } .si-fb:hover .social-icon { background: #1877f2; color: #fff; border-color: #1877f2; box-shadow: 0 10px 30px rgba(24,119,242,0.4); }
-    .si-th:hover { border-color: #ffffff; } .si-th:hover .social-icon { background: #ffffff; color: #000; border-color: #ffffff; box-shadow: 0 10px 30px rgba(255,255,255,0.3); }
+    .si-tg:hover { border-color: #0088cc; } .si-tg:hover .social-icon { background: #0088cc; color: #fff; border-color: #0088cc; box-shadow: 0 5px 20px rgba(0,136,204,0.3); }
+    .si-ig:hover { border-color: #e1306c; } .si-ig:hover .social-icon { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; border-color: transparent; box-shadow: 0 5px 20px rgba(225,48,108,0.3); }
+    .si-fb:hover { border-color: #1877f2; } .si-fb:hover .social-icon { background: #1877f2; color: #fff; border-color: #1877f2; box-shadow: 0 5px 20px rgba(24,119,242,0.3); }
+    .si-th:hover { border-color: #ffffff; } .si-th:hover .social-icon { background: #ffffff; color: #000; border-color: #ffffff; box-shadow: 0 5px 20px rgba(255,255,255,0.2); }
 
     /* ==========================================================================
        8. الفوتر والأنيميشن
        ========================================================================== */
-    footer { padding: 40px 0; text-align: center; border-top: 1px solid var(--border); color: var(--text-muted); font-family: 'Rajdhani', sans-serif; font-size: 1rem; }
+    footer { padding: 30px 0; text-align: center; border-top: 1px solid var(--border); color: var(--text-muted); font-family: 'Orbitron', sans-serif; font-size: 0.9rem; letter-spacing: 1px;}
     
-    .reveal { opacity: 0; transform: translateY(50px); transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
     .reveal.active { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
+  <!-- 1. الدخولية السينمائية (تختفي الأسماء حتى يصل الكشاف للمنتصف) -->
   <div id="intro-screen">
     <div class="intro-brand">
       <div class="intro-logo-icon"><iconify-icon icon="solar:gamepad-bold"></iconify-icon></div>
@@ -236,10 +284,12 @@
     <div class="spotlight-mask"></div>
   </div>
 
+  <!-- 2. الخلفية -->
   <div class="ambient-bg"></div>
   <div class="glow-orb orb-1"></div>
   <div class="glow-orb orb-2"></div>
 
+  <!-- 3. المحتوى -->
   <div class="container">
     <header>
       <div class="navbar">
@@ -254,14 +304,14 @@
       <section class="hero">
         <div class="hero-content reveal">
           <div class="status-badge"><span class="dot"></span> النظام متصل وجاهز</div>
-          <h1>العب. تحدَّ.<br> وانتصر الآن.</h1>
-          <p>أهلاً بك في منصة Play Zone الرسمية. ارتقِ بتجربة اللعب الخاصة بك مع تشكيلتنا الحصرية من ألعاب الموبايل. تجربة تحميل فائقة السرعة وأمان تام بضغطة زر.</p>
+          <h1>ارتقِ بمستوى اللعب<br> إلى حدود جديدة.</h1>
+          <p>اكتشف مكتبة حصرية من أفضل ألعاب الهاتف. تحميل فوري، أمان تام، وتجربة سلسة وموثوقة تبدأ بضغطة زر عبر البوت الرسمي الخاص بنا.</p>
           <div class="btn-group">
             <a href="#games" class="btn btn-primary">
-              <iconify-icon icon="solar:gamepad-bold"></iconify-icon> تصفح الألعاب
+              <iconify-icon icon="solar:gamepad-bold"></iconify-icon> تصفح الإصدارات
             </a>
             <a href="https://t.me/P1ay_Z0ne_Bot" class="btn btn-outline" target="_blank">
-              <iconify-icon icon="mingcute:telegram-fill" style="color:var(--primary)"></iconify-icon> فتح البوت المباشر
+              <iconify-icon icon="mingcute:telegram-fill" style="color:var(--primary)"></iconify-icon> التحميل عبر البوت
             </a>
           </div>
         </div>
@@ -271,6 +321,7 @@
         <h2 class="section-title reveal"><iconify-icon icon="solar:box-minimalistic-bold-duotone"></iconify-icon> <span>أبرز</span> الإصدارات</h2>
         
         <div class="games-grid">
+          <!-- اللعبة الأولى -->
           <article class="spotlight-card reveal">
             <div class="card-image-box">
               <div class="price-tag">1000 IQD</div>
@@ -278,7 +329,7 @@
             </div>
             <div class="card-content">
               <h3>The Challenge</h3>
-              <p>استعد لاختبار مهاراتك وردود أفعالك. لعبة مليئة بالتحديات والمراحل المعقدة التي تتطلب تركيزاً عالياً وسرعة بديهة.</p>
+              <p>اختبر سرعة بديهتك في هذه اللعبة الاستراتيجية. تجاوز العقبات المتزايدة الصعوبة وتصدر قائمة أفضل اللاعبين في تحديات لا تنتهي.</p>
               <div class="download-grid">
                 <a href="https://t.me/P1ay_Z0ne_Bot" class="dl-btn dl-ios" target="_blank"><iconify-icon icon="ic:baseline-apple"></iconify-icon> iOS</a>
                 <a href="https://t.me/P1ay_Z0ne_Bot" class="dl-btn dl-android" target="_blank"><iconify-icon icon="mdi:android"></iconify-icon> Android</a>
@@ -286,6 +337,7 @@
             </div>
           </article>
 
+          <!-- اللعبة الثانية -->
           <article class="spotlight-card reveal">
             <div class="card-image-box">
               <div class="price-tag">1000 IQD</div>
@@ -293,7 +345,7 @@
             </div>
             <div class="card-content">
               <h3>Chicken Life</h3>
-              <p>عالم مرح ومسلي! تقمص دور الدجاجة في بيئة مليئة بالمفاجآت والتحديات الخفيفة لتجربة لعب ممتعة ترسم البسمة.</p>
+              <p>انطلق في مغامرة فكاهية غير تقليدية. استكشف عالماً تفاعلياً مليئاً بالمفاجآت وأكمل مهامك اليومية بأسلوب مرح ومسلٍ.</p>
               <div class="download-grid">
                 <a href="https://t.me/P1ay_Z0ne_Bot" class="dl-btn dl-ios" target="_blank"><iconify-icon icon="ic:baseline-apple"></iconify-icon> iOS</a>
                 <a href="https://t.me/P1ay_Z0ne_Bot" class="dl-btn dl-android" target="_blank"><iconify-icon icon="mdi:android"></iconify-icon> Android</a>
@@ -311,7 +363,7 @@
             <div class="social-icon"><iconify-icon icon="mingcute:telegram-fill"></iconify-icon></div>
             <div>
               <h4>البوت الرسمي</h4>
-              <p>تنزيل سريع وآمن</p>
+              <p>الرابط المباشر للتحميل</p>
             </div>
           </a>
 
@@ -319,7 +371,7 @@
             <div class="social-icon"><iconify-icon icon="mdi:instagram"></iconify-icon></div>
             <div>
               <h4>إنستغرام</h4>
-              <p>نظرة خلف الكواليس</p>
+              <p>أحدث التغطيات والصور</p>
             </div>
           </a>
 
@@ -327,7 +379,7 @@
             <div class="social-icon"><iconify-icon icon="mdi:facebook"></iconify-icon></div>
             <div>
               <h4>فيسبوك</h4>
-              <p>مجتمع اللاعبين</p>
+              <p>انضم لمجتمع اللاعبين</p>
             </div>
           </a>
 
@@ -335,7 +387,7 @@
             <div class="social-icon"><iconify-icon icon="simple-icons:threads"></iconify-icon></div>
             <div>
               <h4>ثريدز</h4>
-              <p>آخر الأخبار العاجلة</p>
+              <p>نقاشات سريعة ومباشرة</p>
             </div>
           </a>
         </div>
@@ -349,27 +401,31 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. الدخولية (Spotlight Intro Cleanup)
-      // الكشاف يستغرق 4.5 ثواني لينهي حركته بالكامل
+      // 1. الدخولية (Intro Cleanup)
+      // تزول الدخولية بالكامل بعد انتهاء الأنيميشن (4.5 ثواني) لتوفير موارد المتصفح
       setTimeout(() => {
         const intro = document.getElementById('intro-screen');
         if(intro) {
-          intro.style.opacity = '0'; // التأكد من الإخفاء
-          setTimeout(() => intro.remove(), 800); // إزالة نهائية لتخفيف الموقع
+          intro.style.opacity = '0';
+          setTimeout(() => intro.remove(), 800);
         }
       }, 4500);
 
       // 2. إضاءة البطاقات (Spotlight Hover on Cards)
-      const cards = document.querySelectorAll('.spotlight-card');
-      cards.forEach(card => {
-        card.addEventListener('mousemove', e => {
-          const rect = card.getBoundingClientRect();
-          card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-          card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+      // تطبق فقط إذا كان الجهاز يدعم الماوس
+      if (window.matchMedia("(pointer: fine)").matches) {
+        const cards = document.querySelectorAll('.spotlight-card');
+        cards.forEach(card => {
+          card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            // تحديث إحداثيات الإضاءة بناءً على موقع الماوس داخل البطاقة
+            card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+            card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+          });
         });
-      });
+      }
 
-      // 3. أنيميشن الظهور (Scroll Reveal)
+      // 3. أنيميشن الظهور بسلاسة (Scroll Reveal)
       const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -377,7 +433,7 @@
             observer.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+      }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
 
       document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     });
