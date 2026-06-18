@@ -4,257 +4,323 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PlayZone | عالم الألعاب</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#030305" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
   <style>
     :root {
-      --bg: #0f172a;
-      --card: #1e293b;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --primary: #00eaff;
-      --accent: #a855f7;
-      --danger: #ef4444;
+      --bg: #030305;
+      --surface: rgba(20, 22, 30, 0.4);
+      --surface-hover: rgba(30, 35, 50, 0.6);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(0, 240, 255, 0.4);
+      --text: #ffffff;
+      --text-muted: #8b92a5;
+      --primary: #00f0ff;
+      --secondary: #8a2be2;
+      --danger: #ff003c;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     
     body {
       background-color: var(--bg);
       color: var(--text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      font-family: 'Cairo', sans-serif;
+      overflow-x: hidden;
       min-height: 100vh;
-      padding: 20px;
     }
 
-    /* شاشة التحميل مع زر الإلغاء */
-    #loader {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.95);
-      backdrop-filter: blur(10px);
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      transition: opacity 0.5s;
-    }
-    
-    .spinner {
-      font-size: 4rem;
-      color: var(--primary);
-      animation: spin 2s linear infinite;
-    }
+    /* اخفاء المؤشر الافتراضي في الأجهزة التي تدعم الماوس لاستخدام المؤشر المخصص */
+    @media (pointer: fine) { body, a, button { cursor: none; } }
+
+    /* --- Cinematic Background --- */
+    .ambient-bg { position: fixed; inset: 0; z-index: -2; overflow: hidden; }
+    .blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.5; animation: float 18s infinite alternate cubic-bezier(0.4, 0, 0.2, 1); }
+    .blob-1 { top: -10%; right: -10%; width: 45vw; height: 45vw; background: rgba(0, 240, 255, 0.15); }
+    .blob-2 { bottom: -10%; left: -10%; width: 55vw; height: 55vw; background: rgba(138, 43, 226, 0.15); animation-delay: -5s; }
+    .noise-overlay { position: fixed; inset: 0; z-index: -1; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); }
+    @keyframes float { 100% { transform: translate(-40px, 60px) rotate(15deg); } }
+
+    /* --- Custom Cursor --- */
+    .cursor-dot, .cursor-outline { position: fixed; pointer-events: none; z-index: 999999; border-radius: 50%; top: 0; left: 0; }
+    .cursor-dot { width: 6px; height: 6px; background: var(--primary); box-shadow: 0 0 12px var(--primary); margin: -3px 0 0 -3px; }
+    .cursor-outline { width: 40px; height: 40px; border: 1px solid rgba(0, 240, 255, 0.4); margin: -20px 0 0 -20px; transition: transform 0.2s, background-color 0.2s; }
+    .cursor-outline.hovering { transform: scale(1.5); background-color: rgba(0, 240, 255, 0.08); border-color: var(--primary); }
+    @media (max-width: 768px) { .cursor-dot, .cursor-outline { display: none !important; } }
+
+    /* --- Preloader --- */
+    .loader-overlay { position: fixed; inset: 0; z-index: 99999; background: rgba(3, 3, 5, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.6s ease, visibility 0.6s; }
+    .spinner-ring { position: relative; width: 100px; height: 100px; margin-bottom: 30px; }
+    .ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid transparent; border-top-color: var(--primary); border-left-color: var(--secondary); animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
+    .ring:nth-child(2) { inset: 12px; border-top-color: var(--secondary); border-left-color: var(--primary); animation-direction: reverse; animation-duration: 2s; }
+    .spinner-icon { position: absolute; inset: 0; display: grid; place-items: center; font-size: 2rem; color: #fff; text-shadow: 0 0 15px var(--primary); }
     @keyframes spin { 100% { transform: rotate(360deg); } }
-
-    .cancel-btn {
-      background: transparent;
-      border: 1px solid var(--danger);
-      color: var(--danger);
-      padding: 8px 24px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .cancel-btn:hover { background: rgba(239, 68, 68, 0.1); }
-
-    /* الحاوية الرئيسية */
-    .container {
-      width: 100%;
-      max-width: 500px;
-      margin-top: 40px;
-    }
-
-    /* ترويسة الموقع */
-    .header { text-align: center; margin-bottom: 40px; }
-    .logo-icon {
-      font-size: 4rem;
-      color: var(--primary);
-      filter: drop-shadow(0 0 15px rgba(0, 234, 255, 0.4));
-      margin-bottom: 10px;
-    }
-    .header h1 { font-weight: 900; font-size: 2rem; margin-bottom: 5px; }
-    .header p { color: var(--text-muted); font-size: 1rem; }
-
-    /* الأقسام (الألعاب والروابط) */
-    .section-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--accent);
-    }
-
-    /* بطاقات الألعاب */
-    .game-card {
-      background: var(--card);
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      transition: transform 0.2s;
-    }
-    .game-card:hover { transform: translateY(-3px); border-color: var(--primary); }
     
-    .game-img {
-      width: 80px;
-      height: 80px;
-      border-radius: 12px;
-      object-fit: cover;
-      background: #334155;
-    }
+    .cancel-btn { background: rgba(255, 0, 60, 0.1); border: 1px solid rgba(255, 0, 60, 0.3); color: var(--danger); padding: 10px 24px; border-radius: 14px; font-family: 'Cairo', sans-serif; font-weight: 800; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; transition: all 0.3s; position: relative; overflow: hidden; }
+    .cancel-btn:hover { background: var(--danger); color: #fff; box-shadow: 0 0 25px rgba(255, 0, 60, 0.4); transform: translateY(-2px); }
 
-    .game-info { flex: 1; }
-    .game-info h3 { font-size: 1.1rem; margin-bottom: 4px; }
-    .game-info p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 8px; }
+    /* --- Container & Layout --- */
+    .container { max-width: 850px; margin: 0 auto; padding: 50px 20px; display: flex; flex-direction: column; gap: 40px; }
+
+    /* --- Header --- */
+    .main-header { text-align: center; display: flex; flex-direction: column; align-items: center; }
+    .logo-box { width: 85px; height: 85px; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), transparent), linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 24px; display: grid; place-items: center; font-size: 2.8rem; color: #fff; box-shadow: 0 15px 35px rgba(0, 240, 255, 0.25); margin-bottom: 20px; animation: float-logo 6s ease-in-out infinite; border: 1px solid rgba(255,255,255,0.2); }
+    @keyframes float-logo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    .brand-title { font-family: 'Orbitron', sans-serif; font-size: clamp(2.5rem, 8vw, 3.8rem); font-weight: 900; letter-spacing: 2px; line-height: 1; margin-bottom: 5px; background: linear-gradient(to right, #fff, var(--primary), var(--secondary), #fff); background-size: 200% auto; color: transparent; -webkit-background-clip: text; animation: shine 4s linear infinite; }
+    @keyframes shine { to { background-position: 200% center; } }
+    .brand-slogan { color: var(--text-muted); font-size: 1.1rem; font-weight: 700; }
+
+    /* --- Sections & Headings --- */
+    .section-head { display: flex; align-items: center; gap: 10px; margin-bottom: -15px; margin-top: 10px;}
+    .section-head iconify-icon { font-size: 1.6rem; color: var(--secondary); filter: drop-shadow(0 0 8px var(--secondary)); }
+    .section-head h2 { font-size: 1.3rem; font-weight: 900; letter-spacing: 0.5px; }
+
+    /* --- Bento Cards (Liquid Glass Effect) --- */
+    .bento-card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); overflow: hidden; text-decoration: none; color: var(--text); display: flex; transition: border-color 0.4s; will-change: transform; transform-style: preserve-3d; }
     
-    .price-tag {
-      font-size: 0.85rem;
-      color: var(--primary);
-      font-weight: bold;
-    }
+    /* Hover Flashlight / Glow Effect */
+    .bento-card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 240, 255, 0.12), transparent 40%); opacity: 0; transition: opacity 0.5s; pointer-events: none; z-index: 1; }
+    .bento-card:hover::before { opacity: 1; }
+    .bento-card:hover { border-color: var(--border-hover); background: var(--surface-hover); }
 
-    .play-btn {
-      background: var(--primary);
-      color: #000;
-      text-decoration: none;
-      padding: 10px 16px;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 0.9rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
+    /* --- Games Area --- */
+    .game-card { height: 230px; }
+    .game-visual { width: 40%; position: relative; overflow: hidden; }
+    .game-visual img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .game-card:hover .game-visual img { transform: scale(1.08); }
+    .game-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%); display: flex; align-items: flex-end; padding: 16px; }
+    .price-tag { font-family: 'Orbitron', sans-serif; color: var(--primary); font-weight: 900; font-size: 1rem; text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); }
+    .game-info { width: 60%; padding: 28px; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 2; }
+    .game-title { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; margin-bottom: 8px; }
+    .game-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 20px; font-weight: 600; }
+    
+    .action-btn { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.3); padding: 10px 20px; border-radius: 14px; color: var(--primary); font-weight: 800; font-size: 0.95rem; transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .game-card:hover .action-btn { background: var(--primary); color: #000; box-shadow: 0 0 25px rgba(0, 240, 255, 0.4); transform: translateY(-3px); }
 
-    /* أزرار التواصل */
-    .social-btn {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-      background: var(--card);
-      padding: 16px;
-      border-radius: 16px;
-      margin-bottom: 12px;
-      color: var(--text);
-      text-decoration: none;
-      font-weight: bold;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: background 0.2s;
-    }
-    .social-btn:hover { background: rgba(255, 255, 255, 0.1); }
-    .social-icon { font-size: 1.5rem; }
+    /* --- Social Grid --- */
+    .bento-socials { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .social-card { padding: 26px; flex-direction: column; align-items: center; text-align: center; justify-content: center; gap: 14px; position: relative; z-index: 2; }
+    .social-icon-box { width: 64px; height: 64px; border-radius: 20px; display: grid; place-items: center; font-size: 2rem; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255,255,255,0.05); transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .social-card:hover .social-icon-box { transform: translateY(-8px) scale(1.05); }
+    
+    .telegram:hover .social-icon-box { background: rgba(0, 136, 204, 0.15); color: #0088cc; border-color: #0088cc; box-shadow: 0 10px 20px rgba(0, 136, 204, 0.2); }
+    .instagram:hover .social-icon-box { background: rgba(225, 48, 108, 0.15); color: #e1306c; border-color: #e1306c; box-shadow: 0 10px 20px rgba(225, 48, 108, 0.2); }
+    .facebook:hover .social-icon-box { background: rgba(24, 119, 242, 0.15); color: #1877f2; border-color: #1877f2; box-shadow: 0 10px 20px rgba(24, 119, 242, 0.2); }
+    .threads:hover .social-icon-box { background: rgba(255, 255, 255, 0.1); color: #fff; border-color: #fff; box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1); }
 
-    footer {
-      margin-top: 40px;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.85rem;
+    .social-title { font-weight: 900; font-size: 1.1rem; }
+    .social-subtitle { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+
+    /* --- Scroll Animations --- */
+    .reveal { opacity: 0; transform: translateY(40px) scale(0.96); transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
+
+    footer { text-align: center; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; padding-top: 20px; border-top: 1px solid var(--border); }
+
+    /* --- Responsive --- */
+    @media (max-width: 650px) {
+      .game-card { flex-direction: column; height: auto; }
+      .game-visual { width: 100%; height: 200px; }
+      .game-info { width: 100%; padding: 20px; }
+      .bento-socials { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <div id="loader">
-    <iconify-icon icon="solar:gamepad-bold" class="spinner"></iconify-icon>
-    <p>جاري التجهيز...</p>
+  <!-- Custom Cursor -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-outline"></div>
+
+  <!-- Ambient Cinematic Background -->
+  <div class="ambient-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="noise-overlay"></div>
+  </div>
+
+  <!-- High-end Preloader -->
+  <div id="loader" class="loader-overlay">
+    <div class="spinner-ring">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="spinner-icon"><iconify-icon icon="solar:gamepad-bold"></iconify-icon></div>
+    </div>
     <button class="cancel-btn" onclick="cancelLoader()">
-      <iconify-icon icon="solar:close-circle-bold"></iconify-icon> الغاء
+      <iconify-icon icon="solar:close-circle-bold"></iconify-icon> الغاء التحميل
     </button>
   </div>
 
-  <div class="container">
-    <header class="header">
-      <iconify-icon icon="solar:gamepad-bold" class="logo-icon"></iconify-icon>
-      <h1>PlayZone</h1>
-      <p>العب. تحدَّ. انتصر!</p>
+  <main class="container">
+    <!-- Header -->
+    <header class="main-header reveal">
+      <div class="logo-box"><iconify-icon icon="solar:gamepad-bold"></iconify-icon></div>
+      <h1 class="brand-title">PlayZone</h1>
+      <p class="brand-slogan">العب. تحدَّ. انتصر!</p>
     </header>
 
-    <h2 class="section-title"><iconify-icon icon="solar:fire-bold"></iconify-icon> الألعاب الحالية</h2>
-    
-    <div class="game-card">
-      <img src="IMG1.PNG" alt="The Challenge" class="game-img" loading="lazy">
-      <div class="game-info">
-        <h3>The Challenge</h3>
-        <p>لعبة تحديات نارية! ركّز، تفاعل بسرعة، واجتاز مراحل تزداد صعوبة. هل تقدر تكمل للنهاية؟ 🔥</p>
-        <div class="price-tag">1000 IQD</div>
+    <!-- Games Section -->
+    <div class="section-head reveal">
+      <iconify-icon icon="solar:fire-bold"></iconify-icon>
+      <h2>الألعاب الحالية</h2>
+    </div>
+
+    <!-- Game 1 -->
+    <a href="https://t.me/P1ay_Z0ne_Bot" class="bento-card game-card reveal" target="_blank">
+      <div class="game-visual">
+        <img src="IMG1.PNG" alt="The Challenge" loading="lazy">
+        <div class="game-overlay"><span class="price-tag">1000 IQD</span></div>
       </div>
-      <a href="https://t.me/P1ay_Z0ne_Bot" class="play-btn" target="_blank">
-        تحميل
+      <div class="game-info">
+        <h3 class="game-title">The Challenge</h3>
+        <p class="game-desc">لعبة تحديات نارية! ركّز، تفاعل بسرعة، واجتاز مراحل تزداد صعوبة. هل تقدر تكمل للنهاية؟ 🔥</p>
+        <div class="action-btn">
+          <iconify-icon icon="solar:download-minimalistic-bold" width="20"></iconify-icon> تحميل الآن
+        </div>
+      </div>
+    </a>
+
+    <!-- Game 2 -->
+    <a href="https://t.me/P1ay_Z0ne_Bot" class="bento-card game-card reveal" target="_blank">
+      <div class="game-visual">
+        <img src="IMG2.PNG" alt="Chicken Life" loading="lazy">
+        <div class="game-overlay"><span class="price-tag">1000 IQD</span></div>
+      </div>
+      <div class="game-info">
+        <h3 class="game-title">Chicken Life</h3>
+        <p class="game-desc">عيش حياة الدجاجة! عالم مرح مليء بالمفاجآت والتحديات الخفيفة. لعبة تسلّيك وتضحّكك 🐔</p>
+        <div class="action-btn">
+          <iconify-icon icon="solar:download-minimalistic-bold" width="20"></iconify-icon> تحميل الآن
+        </div>
+      </div>
+    </a>
+
+    <!-- Socials Section -->
+    <div class="section-head reveal" style="margin-top: 10px;">
+      <iconify-icon icon="solar:chat-round-dots-bold"></iconify-icon>
+      <h2>تواصل معنا</h2>
+    </div>
+
+    <div class="bento-socials">
+      <a href="https://t.me/P1ay_Z0ne_Bot" class="bento-card social-card telegram reveal" target="_blank">
+        <div class="social-icon-box"><iconify-icon icon="mingcute:telegram-fill"></iconify-icon></div>
+        <div>
+          <div class="social-title">البوت الرسمي</div>
+          <div class="social-subtitle">Telegram Bot</div>
+        </div>
+      </a>
+
+      <a href="https://www.instagram.com/p1ay.zone?igsh=MW9uYTB1dTZxZnpocQ%3D%3D&utm_source=qr" class="bento-card social-card instagram reveal" target="_blank">
+        <div class="social-icon-box"><iconify-icon icon="mdi:instagram"></iconify-icon></div>
+        <div>
+          <div class="social-title">حساب الإنستغرام</div>
+          <div class="social-subtitle">صور وأخبار حصرية</div>
+        </div>
+      </a>
+
+      <a href="https://www.facebook.com/share/1AiqxvzMpc/?mibextid=wwXIfr" class="bento-card social-card facebook reveal" target="_blank">
+        <div class="social-icon-box"><iconify-icon icon="mdi:facebook"></iconify-icon></div>
+        <div>
+          <div class="social-title">صفحة الفيسبوك</div>
+          <div class="social-subtitle">مجتمع اللاعبين</div>
+        </div>
+      </a>
+
+      <a href="https://www.threads.com/@p1ay.zone?igshid=NTc4MTIwNjQ2YQ==" class="bento-card social-card threads reveal" target="_blank">
+        <div class="social-icon-box"><iconify-icon icon="simple-icons:threads"></iconify-icon></div>
+        <div>
+          <div class="social-title">حساب ثريدز</div>
+          <div class="social-subtitle">آخر التحديثات السريعة</div>
+        </div>
       </a>
     </div>
 
-    <div class="game-card">
-      <img src="IMG2.PNG" alt="Chicken Life" class="game-img" loading="lazy">
-      <div class="game-info">
-        <h3>Chicken Life</h3>
-        <p>عيش حياة الدجاجة! عالم مرح مليء بالمفاجآت والتحديات الخفيفة. لعبة تسلّيك وتضحّكك 🐔</p>
-        <div class="price-tag">1000 IQD</div>
-      </div>
-      <a href="https://t.me/P1ay_Z0ne_Bot" class="play-btn" target="_blank">
-        تحميل
-      </a>
-    </div>
-
-    <br>
-
-    <h2 class="section-title"><iconify-icon icon="solar:chat-round-dots-bold"></iconify-icon> تواصل معنا</h2>
-
-    <a href="https://t.me/P1ay_Z0ne_Bot" class="social-btn" target="_blank">
-      <iconify-icon icon="mingcute:telegram-fill" class="social-icon" style="color: #0088cc;"></iconify-icon>
-      البوت الرسمي (Telegram)
-    </a>
-
-    <a href="https://www.instagram.com/p1ay.zone?igsh=MW9uYTB1dTZxZnpocQ%3D%3D&utm_source=qr" class="social-btn" target="_blank">
-      <iconify-icon icon="mdi:instagram" class="social-icon" style="color: #e1306c;"></iconify-icon>
-      حساب الإنستغرام
-    </a>
-
-    <a href="https://www.facebook.com/share/1AiqxvzMpc/?mibextid=wwXIfr" class="social-btn" target="_blank">
-      <iconify-icon icon="mdi:facebook" class="social-icon" style="color: #1877f2;"></iconify-icon>
-      صفحة الفيسبوك
-    </a>
-
-    <a href="https://www.threads.com/@p1ay.zone?igshid=NTc4MTIwNjQ2YQ==" class="social-btn" target="_blank">
-      <iconify-icon icon="simple-icons:threads" class="social-icon" style="color: #ffffff;"></iconify-icon>
-      حساب ثريدز (Threads)
-    </a>
-
-    <footer>
+    <!-- Footer -->
+    <footer class="reveal">
       © 2026 PlayZone — جميع الحقوق محفوظة
     </footer>
-  </div>
+  </main>
 
   <script>
+    // --- Preloader Logic ---
     const loader = document.getElementById('loader');
-    
-    // دالة إخفاء شاشة التحميل
     const hideLoader = () => {
       loader.style.opacity = '0';
-      setTimeout(() => loader.style.display = 'none', 500);
+      setTimeout(() => loader.style.display = 'none', 600);
     };
+    let loadTimer = setTimeout(hideLoader, 2000); // يختفي تلقائياً بعد ثانيتين
+    window.cancelLoader = () => { clearTimeout(loadTimer); hideLoader(); };
 
-    // إخفاء التحميل تلقائياً بعد ثانيتين
-    let loadTimeout = setTimeout(hideLoader, 2000);
+    // --- Custom Smooth Cursor ---
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorOutline = document.querySelector('.cursor-outline');
+    let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0;
 
-    // دالة الإلغاء اليدوي (توقف العملية النشطة فوراً)
-    function cancelLoader() {
-      clearTimeout(loadTimeout);
-      hideLoader();
+    if (window.matchMedia("(pointer: fine)").matches) {
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX; mouseY = e.clientY;
+        cursorDot.style.left = `${mouseX}px`;
+        cursorDot.style.top = `${mouseY}px`;
+      });
+
+      const animateCursor = () => {
+        outlineX += (mouseX - outlineX) * 0.15;
+        outlineY += (mouseY - outlineY) * 0.15;
+        cursorOutline.style.left = `${outlineX}px`;
+        cursorOutline.style.top = `${outlineY}px`;
+        requestAnimationFrame(animateCursor);
+      };
+      animateCursor();
+
+      // توسيع المؤشر عند الوقوف على الأزرار
+      document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => cursorOutline.classList.add('hovering'));
+        el.addEventListener('mouseleave', () => cursorOutline.classList.remove('hovering'));
+      });
     }
+
+    // --- 3D Magnetic Tilt & Flashlight Glow ---
+    document.querySelectorAll('.bento-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // تأثير الإضاءة (Glow)
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+
+        // تأثير 3D (يعمل فقط في أجهزة الماوس)
+        if (window.matchMedia("(pointer: fine)").matches) {
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -4; 
+          const rotateY = ((x - centerX) / centerX) * 4;
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        }
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        if (window.matchMedia("(pointer: fine)").matches) {
+          card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        }
+      });
+    });
+
+    // --- Scroll Reveal Animation ---
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('active'), index * 100);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>
