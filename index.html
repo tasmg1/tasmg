@@ -5,22 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Play Zone | بوابة الألعاب</title>
   <meta name="description" content="منصة Play Zone - بوابتك لاكتشاف وتحميل أقوى ألعاب الموبايل بسرعة وأمان.">
-  <meta name="theme-color" content="#050508" />
+  <meta name="theme-color" content="#191a1a" />
   
-  <!-- خطوط عصرية وفخمة -->
+  <!-- خطوط عصرية وفخمة متناسقة مع أجواء الجيمينج والسايبر -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
   
-  <!-- مكتبة الأيقونات -->
-  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+  <!-- مكتبة الأيقونات - مضاف لها defer لعدم حظر المعالجة الأولية -->
+  <script defer src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 
   <style>
     /* ==========================================================================
        1. المتغيرات والألوان (Cyber-Gamer Aesthetic)
        ========================================================================== */
     :root {
-      --bg-dark: #050508;
+      --bg-dark: #000000;
       --bg-surface: rgba(20, 22, 30, 0.4);
       --primary: #00f0ff;
       --primary-glow: rgba(0, 240, 255, 0.5);
@@ -37,13 +37,13 @@
     body {
       background-color: var(--bg-dark);
       color: var(--text-main);
-      font-family: 'Alexandria', sans-serif;
+      font-family: 'Cairo', sans-serif;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
     /* ==========================================================================
-       2. الدخولية السينمائية (Spotlight Intro)
+       2. الدخولية السينمائية
        ========================================================================== */
     #intro-screen {
       position: fixed; inset: 0; z-index: 999999;
@@ -51,91 +51,130 @@
       display: grid; place-items: center;
       overflow: hidden;
       transition: opacity 0.8s ease;
-    }
-    
-    .intro-brand {
-      position: relative; z-index: 1;
-      display: flex; flex-direction: column; align-items: center; gap: 12px;
-      opacity: 0;
-      transform: scale(0.9);
-      filter: blur(10px);
-      animation: revealBrand 0.8s 3.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-    
-    @keyframes revealBrand {
-      100% { opacity: 1; transform: scale(1); filter: blur(0); }
+      will-change: opacity; /* تفعيل معالجة الـ GPU لإنهاء الشاشة بسلاسة */
     }
 
-    .intro-logo-icon {
-      font-size: 5rem;
+    .loader-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 140px;
+      width: 100%; /* ممتد بكامل عرض الجهاز ليعطي الإضاءة الخلفية مظهرها السينمائي الواسع */
+      padding: 0 24px; /* يضمن إبعاد النص تماماً عن حواف الشاشات الصغيرة */
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(1.6rem, 6vw, 3.2rem); /* حجم خط مرن يتناسب مع الشاشات دون تداخل */
+      font-weight: 800;
+      letter-spacing: clamp(4px, 1.2vw, 8px); /* مسافات ذكية تتقلص تلقائياً في الهواتف لمنع الالتصاق */
+      user-select: none;
       color: #fff;
-      filter: drop-shadow(0 0 25px var(--primary-glow));
-    }
-    .intro-name {
-      font-family: 'Orbitron', sans-serif; 
-      font-size: clamp(2rem, 6vw, 3.5rem);
-      font-weight: 900; letter-spacing: 4px;
-      background: linear-gradient(135deg, #fff 30%, var(--primary));
-      -webkit-background-clip: text; color: transparent;
+      direction: ltr;
+      white-space: nowrap;
     }
 
-    .spotlight-mask {
-      position: absolute; top: 50%; left: 50%;
-      width: 250px; height: 250px;
-      margin: -125px 0 0 -125px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 75%);
-      box-shadow: inset 0 0 30px 15px var(--bg-dark), 0 0 0 150vmax var(--bg-dark);
-      pointer-events: none; z-index: 2;
-      will-change: transform, box-shadow;
-      animation: searchSpotlight 4.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    .loader {
+      position: absolute; inset: 0;
+      z-index: 1;
+      background-color: transparent;
+      mask: repeating-linear-gradient(90deg, transparent 0, transparent 6px, black 7px, black 8px);
+      -webkit-mask: repeating-linear-gradient(90deg, transparent 0, transparent 6px, black 7px, black 8px);
     }
 
-    @keyframes searchSpotlight {
-      0%   { transform: translate(-30vw, -30vh) scale(0.5); }
-      20%  { transform: translate(30vw, -20vh) scale(0.7); }
-      40%  { transform: translate(20vw, 30vh) scale(0.5); }
-      60%  { transform: translate(-30vw, 20vh) scale(0.6); }
-      75%  { transform: translate(0, 0) scale(1.1); box-shadow: inset 0 0 30px 15px var(--bg-dark), 0 0 0 150vmax var(--bg-dark); }
-      80%  { transform: translate(0, 0) scale(1.3); box-shadow: inset 0 0 30px 15px var(--bg-dark), 0 0 0 150vmax var(--bg-dark), inset 0 0 120px rgba(0,240,255,0.7); }
-      90%  { transform: translate(0, 0) scale(1.3); opacity: 1; }
-      100% { transform: translate(0, 0) scale(35); opacity: 0; }
+    .loader::after {
+      content: "";
+      position: absolute; inset: 0;
+      background-image: 
+        radial-gradient(circle at 50% 50%, var(--primary) 0%, transparent 55%),
+        radial-gradient(circle at 45% 45%, var(--secondary) 0%, transparent 50%),
+        radial-gradient(circle at 55% 55%, var(--primary) 0%, transparent 50%);
+      mask: radial-gradient(circle at 50% 50%, transparent 0%, transparent 15%, black 30%);
+      -webkit-mask: radial-gradient(circle at 50% 50%, transparent 0%, transparent 15%, black 30%);
+      animation: transform-animation 4s forwards, opacity-animation 4s forwards;
+      animation-timing-function: cubic-bezier(0.6, 0.8, 0.5, 1);
+    }
+
+    @keyframes transform-animation {
+      0% { transform: translate(-50%); }
+      100% { transform: translate(50%); }
+    }
+    @keyframes opacity-animation {
+      0% { opacity: 0; }
+      15% { opacity: 1; }
+      75% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    .loader-letter {
+      display: inline-block;
+      opacity: 0;
+      animation: loader-letter-anim 4s forwards linear;
+      z-index: 2;
+    }
+    .loader-letter:nth-child(1) { animation-delay: 0.1s; }
+    .loader-letter:nth-child(2) { animation-delay: 0.2s; }
+    .loader-letter:nth-child(3) { animation-delay: 0.3s; }
+    .loader-letter:nth-child(4) { animation-delay: 0.4s; }
+    .loader-letter:nth-child(5) { animation-delay: 0.5s; } 
+    .loader-letter:nth-child(6) { animation-delay: 0.6s; }
+    .loader-letter:nth-child(7) { animation-delay: 0.7s; }
+    .loader-letter:nth-child(8) { animation-delay: 0.8s; }
+    .loader-letter:nth-child(9) { animation-delay: 0.9s; }
+
+    @keyframes loader-letter-anim {
+      0% { opacity: 0; transform: scale(0.95); }
+      5% {
+        opacity: 1;
+        text-shadow: 0 0 10px var(--primary), 0 0 25px var(--primary-glow);
+        transform: scale(1.05) translateY(-2px);
+      }
+      25% { opacity: 1; transform: scale(1); }
+      75% { opacity: 1; }
+      100% { opacity: 0; }
     }
 
     /* ==========================================================================
-       3. الخلفية التفاعلية
+       3. Background & Utilities
        ========================================================================== */
     .ambient-bg {
-      position: fixed; inset: 0; z-index: -1;
+      position: fixed; 
+      inset: 0; 
+      z-index: -1;
+      --color: rgba(114, 114, 114, 0.15);
+      background-color: var(--bg-dark);
       background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-      background-size: 50px 50px;
-      mask-image: radial-gradient(circle at top, black 40%, transparent 85%);
-      -webkit-mask-image: radial-gradient(circle at top, black 40%, transparent 85%);
+        linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%,transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%,transparent),
+        linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%,transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%,transparent);
+      background-size: 55px 55px;
+      mask-image: radial-gradient(circle at top, black 50%, transparent 95%);
+      -webkit-mask-image: radial-gradient(circle at top, black 50%, transparent 95%);
     }
 
     .glow-orb {
       position: fixed; width: 55vw; height: 55vw; border-radius: 50%;
       filter: blur(160px); opacity: 0.15; pointer-events: none;
       animation: orbFloat 25s infinite alternate ease-in-out;
+      will-change: transform; /* حماية المعالج الأساسي أثناء حركة الخلفيات الدائرية */
     }
     .orb-1 { top: -10%; right: -10%; background: var(--primary); }
     .orb-2 { bottom: -10%; left: -10%; background: var(--secondary); animation-delay: -12s; }
     @keyframes orbFloat { 100% { transform: translate(-40px, 40px); } }
 
-    /* ==========================================================================
-       4. الشريط العلوي (Header)
-       ========================================================================== */
     .container { max-width: 1150px; margin: 0 auto; padding: 0 20px; }
     
     header {
-      position: sticky; top: 0; z-index: 1000; padding: 15px 0;
-      background: linear-gradient(to bottom, rgba(5,5,8,0.95), transparent);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 15px 0;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
     }
     
-    .navbar { display: flex; justify-content: space-between; align-items: center; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 0 20px;}
     .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
     .brand-logo-box {
       width: 38px; height: 38px; background: rgba(255,255,255,0.03);
@@ -145,13 +184,13 @@
     }
     .brand-logo-box iconify-icon { font-size: 1.4rem; color: var(--primary); }
     .brand-name {
-      font-family: 'Orbitron', sans-serif; font-size: 1.25rem; font-weight: 900;
+      font-family: 'Rajdhani', sans-serif; font-size: 1.4rem; font-weight: 800;
       background: linear-gradient(90deg, #fff, var(--primary)); -webkit-background-clip: text; color: transparent;
       letter-spacing: 1.2px;
     }
 
     /* ==========================================================================
-       5. القسم الرئيسي (Hero Section)
+       4. Hero Section
        ========================================================================== */
     .hero { min-height: 70vh; display: flex; align-items: center; position: relative; padding-top: 30px; }
     .hero-content { max-width: 700px; position: relative; z-index: 2; }
@@ -159,146 +198,323 @@
     .status-badge {
       display: inline-flex; align-items: center; gap: 8px; padding: 5px 14px; border-radius: 50px;
       background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.25);
-      color: var(--primary); font-family: 'Orbitron', 'Alexandria', sans-serif; font-weight: 700; font-size: 0.8rem;
+      color: var(--primary); font-family: 'Rajdhani', 'Cairo', sans-serif; font-weight: 700; font-size: 0.85rem;
       margin-bottom: 20px; letter-spacing: 0.5px;
     }
     .status-badge .dot { width: 6px; height: 6px; background: #00ff41; border-radius: 50%; box-shadow: 0 0 10px #00ff41; animation: blink 1.5s infinite; }
     @keyframes blink { 50% { opacity: 0.3; } }
 
-    /* 🔴 تم تغيير العنوان هنا بناءً على طلبك */
-    .hero h1 { font-size: clamp(1.2rem, 4vw, 3.8rem); font-weight: 900; line-height: 1.4; margin-bottom: 18px; text-shadow: 0 10px 30px rgba(0,0,0,0.5); white-space: nowrap; }
-    .hero p { font-size: 1rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 30px; }
+    .hero h1 { font-size: clamp(1.2rem, 4vw, 3.4rem); font-weight: 900; line-height: 1.5; margin-bottom: 18px; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .hero p { font-size: 1rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 30px; }
 
-    .btn-group { display: flex; gap: 12px; flex-wrap: wrap; }
-    .btn {
-      display: inline-flex; justify-content: center; align-items: center; gap: 8px;
-      padding: 12px 26px; border-radius: 10px; font-weight: 700; font-size: 0.95rem;
-      text-decoration: none; transition: var(--transition);
-    }
-    .btn-primary { background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(255,255,255,0.35); }
-    .btn-outline { background: rgba(255,255,255,0.03); color: #fff; border: 1px solid var(--border); backdrop-filter: blur(10px); }
-    .btn-outline:hover { background: rgba(0, 240, 255, 0.1); border-color: rgba(0, 240, 255, 0.4); color: var(--primary); }
+    .btn-group { display: flex; gap: 24px; flex-wrap: wrap; padding-bottom: 20px; overflow: visible; }
 
     /* ==========================================================================
-       6. الألعاب (Spotlight Cards)
+       5. الأزرار المطورة (Cyber 3D Buttons - المحسنة برمجياً لتقليل العبء)
        ========================================================================== */
+    .cyber-btn {
+      position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 14px 34px; font-family: 'Cairo', 'Rajdhani', sans-serif; font-size: 0.95rem; font-weight: 700;
+      text-decoration: none; border-radius: 12px; outline: none; border: 3px solid var(--glow-color); color: var(--glow-color);
+      background-color: var(--btn-color); text-shadow: 0 0 .5em var(--glow-color); cursor: pointer;
+      box-shadow: 0 0 1em .25em var(--glow-color), 0 0 4em 1em var(--glow-spread-color), inset 0 0 .75em .25em var(--glow-color);
+      /* تحسين خاصية الانتقال لتحديد العناصر وتخفيف تكرار المعالجة للـ Layout */
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+    }
+    .cyber-btn::after {
+      pointer-events: none; content: ""; position: absolute; top: 125%; left: 5%; height: 60%; width: 90%;
+      background-color: var(--glow-spread-color); filter: blur(1.8em); opacity: .6;
+      transform: perspective(1.5em) rotateX(35deg) scale(1, .6); transition: opacity 0.3s, transform 0.3s;
+    }
+    .cyber-btn:hover {
+      color: #050508; background-color: var(--glow-color); text-shadow: none; transform: translateY(-3px);
+      box-shadow: 0 0 1em .25em var(--glow-color), 0 0 4em 2em var(--glow-spread-color), inset 0 0 .75em .25em var(--glow-color);
+    }
+    .cyber-btn:hover::after { opacity: .9; transform: perspective(1.5em) rotateX(35deg) scale(1.1, .7); }
+    .cyber-btn:active { transform: translateY(1px); box-shadow: 0 0 0.6em .25em var(--glow-color), 0 0 2.5em 2em var(--glow-spread-color), inset 0 0 .5em .25em var(--glow-color); }
+
+    .cyber-btn.btn-sm { padding: 10px 16px; font-size: 0.85rem; border-radius: 10px; border-width: 2px; gap: 6px; }
+    .cyber-btn.btn-sm::after { top: 115%; filter: blur(1.2em); }
+
+    .btn-cyan { --glow-color: #00f0ff; --glow-spread-color: rgba(0, 240, 255, 0.4); --btn-color: #02141a; }
+    .btn-purple { --glow-color: #a855f7; --glow-spread-color: rgba(168, 85, 247, 0.4); --btn-color: #120721; }
+    .btn-silver { --glow-color: #e2e8f0; --glow-spread-color: rgba(226, 232, 240, 0.3); --btn-color: #1e293b; }
+    .btn-green { --glow-color: #3ddc84; --glow-spread-color: rgba(61, 220, 132, 0.4); --btn-color: #041f0f; }
+
+    /* ==========================================================================
+       6. كروت الألعاب المطورة والمحسنة بالكامل (تم الحفاظ الكامل على الهيكل)
+       ========================================================================== */
+    #games {
+      content-visibility: auto; /* عدم معالجة الكروت والمربعات بداخلها إلا عند التمرير إليها لتسريع الإقلاع الأولي */
+      contain-intrinsic-size: 600px;
+    }
+
     .section-title { font-size: 1.8rem; font-weight: 800; margin: 70px 0 35px; display: flex; align-items: center; gap: 12px; }
     .section-title span { color: var(--primary); }
 
-    .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+    .games-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+      gap: 40px; 
+      overflow: visible;
+    }
 
-    .spotlight-card {
-      position: relative; background: var(--bg-surface); border: 1px solid var(--border);
-      border-radius: 18px; overflow: hidden; display: flex; flex-direction: column;
-      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-      transition: border-color 0.4s ease, transform 0.4s ease;
+    .game-card-container {
+      position: relative;
+      width: 100%;
+      height: 580px;
+      transition: transform 200ms ease-out;
+      overflow: visible;
     }
-    
-    @media (hover: hover) {
-      .spotlight-card::before {
-        content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-        background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(0, 240, 255, 0.08), transparent 40%);
-        opacity: 0; transition: opacity 0.5s;
-      }
-      .spotlight-card:hover::before { opacity: 1; }
-      .spotlight-card:hover { border-color: rgba(0, 240, 255, 0.3); transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
+    .game-card-container:active { transform: scale(0.98); }
+
+    .canvas {
+      perspective: 1000px;
+      inset: 0;
+      z-index: 200;
+      position: absolute;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(5, 1fr);
+      gap: 0px;
+      grid-template-areas: 
+        "tr-1 tr-2 tr-3 tr-4 tr-5"
+        "tr-6 tr-7 tr-8 tr-9 tr-10"
+        "tr-11 tr-12 tr-13 tr-14 tr-15"
+        "tr-16 tr-17 tr-18 tr-19 tr-20"
+        "tr-21 tr-22 tr-23 tr-24 tr-25";
     }
+
+    .tracker { position: relative; z-index: 200; width: 100%; height: 100%; cursor: pointer; pointer-events: none;}
+
+    .game-3d-card {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: #000000;
+      border-radius: 38px;
+      border: 2px solid rgb(45, 45, 45);
+      padding: 8px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+      transform-style: preserve-3d;
+      transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), filter 300ms, border-color 0.3s;
+      will-change: transform; /* تحفيز كارت الشاشة لتسهيل التفاف الـ 3D عبر الـ Trackers بدون جيرك */
+      backface-visibility: hidden; /* تسريع معالجة الأسطح الخلفية وعزل الطبقات */
+    }
+
+    .game-3d-card::before {
+      content: ''; position: absolute; inset: -2px; z-index: -1;
+      background: linear-gradient(43deg, var(--primary) 0%, var(--secondary) 100%);
+      filter: blur(2rem); opacity: 0.15; border-radius: 38px; transition: opacity 300ms;
+    }
+    .tracker:hover ~ .game-3d-card::before { opacity: 0.45; }
+    .tracker:hover ~ .game-3d-card { border-color: rgba(0, 240, 255, 0.35); }
+
+    /* الشاشة الداخلية للهاتف الذكي */
+    .card-int {
+      position: relative;
+      background: #090a0f;
+      height: 100%;
+      border-radius: 30px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .phone-notch {
+      position: absolute; top: 0px; right: 50%; transform: translate(50%, 0%);
+      width: 38%; height: 19px; background-color: #000000;
+      border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; z-index: 260;
+    }
+    .phone-speaker {
+      position: absolute; top: 3px; right: 50%; transform: translate(50%, 0%);
+      width: 35%; height: 2px; border-radius: 2px; background-color: rgb(25, 25, 25);
+    }
+    .phone-camera {
+      position: absolute; top: 6px; right: 82%; transform: translate(50%, 0%);
+      width: 6px; height: 6px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.08);
+    }
+    .phone-camera-lens {
+      position: absolute; width: 2px; height: 2px; border-radius: 50%;
+      top: 50%; right: 50%; transform: translate(50%, -50%); background-color: rgba(0, 0, 255, 0.3);
+    }
+
+    .p-btn { position: absolute; width: 2.5px; background: linear-gradient(to bottom, #222, #444, #111); border-radius: 2px; }
+    .p-btn-power { height: 45px; top: 28%; right: -4.5px; }
+    .p-btn-vol-up { height: 30px; top: 24%; left: -4.5px; }
+    .p-btn-vol-down { height: 30px; top: 31%; left: -4.5px; }
+
+    /* اتجاهات الـ 3D التفاعلية (تم الإبقاء عليها بالكامل كما هي) */
+    .tr-1:hover ~ .game-3d-card { transform: rotateX(15deg) rotateY(-10deg); }
+    .tr-2:hover ~ .game-3d-card { transform: rotateX(15deg) rotateY(-5deg); }
+    .tr-3:hover ~ .game-3d-card { transform: rotateX(15deg) rotateY(0deg); }
+    .tr-4:hover ~ .game-3d-card { transform: rotateX(15deg) rotateY(5deg); }
+    .tr-5:hover ~ .game-3d-card { transform: rotateX(15deg) rotateY(10deg); }
+    .tr-6:hover ~ .game-3d-card { transform: rotateX(7deg) rotateY(-10deg); }
+    .tr-7:hover ~ .game-3d-card { transform: rotateX(7deg) rotateY(-5deg); }
+    .tr-8:hover ~ .game-3d-card { transform: rotateX(7deg) rotateY(0deg); }
+    .tr-9:hover ~ .game-3d-card { transform: rotateX(7deg) rotateY(5deg); }
+    .tr-10:hover ~ .game-3d-card { transform: rotateX(7deg) rotateY(10deg); }
+    .tr-11:hover ~ .game-3d-card { transform: rotateX(0deg) rotateY(-10deg); }
+    .tr-12:hover ~ .game-3d-card { transform: rotateX(0deg) rotateY(-5deg); }
+    .tr-13:hover ~ .game-3d-card { transform: rotateX(0deg) rotateY(0deg); }
+    .tr-14:hover ~ .game-3d-card { transform: rotateX(0deg) rotateY(5deg); }
+    .tr-15:hover ~ .game-3d-card { transform: rotateX(0deg) rotateY(10deg); }
+    .tr-16:hover ~ .game-3d-card { transform: rotateX(-7deg) rotateY(-10deg); }
+    .tr-17:hover ~ .game-3d-card { transform: rotateX(-7deg) rotateY(-5deg); }
+    .tr-18:hover ~ .game-3d-card { transform: rotateX(-7deg) rotateY(0deg); }
+    .tr-19:hover ~ .game-3d-card { transform: rotateX(-7deg) rotateY(5deg); }
+    .tr-20:hover ~ .game-3d-card { transform: rotateX(-7deg) rotateY(10deg); }
+    .tr-21:hover ~ .game-3d-card { transform: rotateX(-15deg) rotateY(-10deg); }
+    .tr-22:hover ~ .game-3d-card { transform: rotateX(-15deg) rotateY(-5deg); }
+    .tr-23:hover ~ .game-3d-card { transform: rotateX(-15deg) rotateY(0deg); }
+    .tr-24:hover ~ .game-3d-card { transform: rotateX(-15deg) rotateY(5deg); }
+    .tr-25:hover ~ .game-3d-card { transform: rotateX(-15deg) rotateY(10deg); }
 
     .card-image-box {
-      width: 100%; height: 230px; position: relative; z-index: 1;
-      padding: 25px; display: flex; justify-content: center; align-items: center;
-      background: radial-gradient(circle at top, rgba(0, 240, 255, 0.04), rgba(0,0,0,0.4));
-      border-bottom: 1px solid var(--border);
+      width: 100%;
+      height: 240px;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      background: #0d0e12;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
+    
     .card-image-box img {
-      width: 100%; height: 100%; object-fit: contain;
-      filter: drop-shadow(0 15px 20px rgba(0,0,0,0.7));
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      width: 100%;
+      height: 100%;
+      object-fit: cover; 
+      object-position: center;
+      transition: transform 0.6s var(--transition);
     }
-    .spotlight-card:hover .card-image-box img { transform: scale(1.06) translateY(-5px); filter: drop-shadow(0 18px 25px rgba(0,0,0,0.8)); }
+    .game-card-container:hover .card-image-box img { transform: scale(1.06); }
+
+    .card-image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 50%, rgba(9, 10, 15, 1) 100%);
+      z-index: 2;
+    }
 
     .price-tag {
-      position: absolute; top: 12px; right: 12px; z-index: 2;
-      background: rgba(0,0,0,0.75); backdrop-filter: blur(5px);
-      border: 1px solid rgba(0, 240, 255, 0.3); color: var(--primary);
-      padding: 4px 10px; border-radius: 6px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.8rem;
+      position: absolute; top: 32px; right: 16px; z-index: 250; 
+      background: rgba(0, 240, 255, 0.12); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--primary); color: var(--primary); padding: 5px 12px; border-radius: 8px; 
+      font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.85rem;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
     }
 
-    .card-content { padding: 20px; position: relative; z-index: 1; flex-grow: 1; display: flex; flex-direction: column; }
-    .card-content h3 { font-family: 'Orbitron', 'Alexandria', sans-serif; font-size: 1.25rem; font-weight: 800; margin-bottom: 8px; }
-    .card-content p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; flex-grow: 1; line-height: 1.6; }
-
-    .download-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .dl-btn {
-      display: flex; justify-content: center; align-items: center; gap: 6px;
-      padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border); color: #fff; text-decoration: none;
-      font-family: 'Orbitron', 'Alexandria', sans-serif; font-weight: 700; font-size: 0.85rem; transition: var(--transition);
+    .game-badge {
+      position: absolute; top: 32px; left: 16px; z-index: 250; 
+      background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; padding: 5px 12px; border-radius: 8px; 
+      font-size: 0.7rem; font-weight: 600;
     }
-    .dl-btn iconify-icon { font-size: 1.2rem; }
-    .dl-ios:hover { background: #f8faff; color: #000; border-color: #f8faff; box-shadow: 0 0 12px rgba(255,255,255,0.2); }
-    .dl-android:hover { background: #3ddc84; color: #000; border-color: #3ddc84; box-shadow: 0 0 12px rgba(61,220,132,0.3); }
+
+    /* محتوى الكارت السفلي */
+    .card-content { padding: 22px; position: relative; z-index: 3; flex-grow: 1; display: flex; flex-direction: column; background: #090a0f; }
+    .card-content h3 { font-family: 'Rajdhani', 'Cairo', sans-serif; font-size: 1.35rem; font-weight: 700; margin-bottom: 8px; color: #fff; letter-spacing: 0.5px; }
+    .card-content p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 22px; flex-grow: 1; line-height: 1.7; }
+
+    .download-grid { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 12px; 
+      padding-bottom: 4px; 
+      position: relative;
+      z-index: 250;
+      overflow: visible;
+    }
+
+    .noselect {
+      -webkit-touch-callout: none; -webkit-user-select: none; -webkit-focus-ring-color: transparent;
+      -moz-user-select: none; -ms-user-select: none; user-select: none;
+    }
 
     /* ==========================================================================
-       7. التواصل
+       7. شريطة قنوات التواصل الزجاجية
        ========================================================================== */
-    .social-bento { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 70px; }
-    .social-item {
-      padding: 20px; border-radius: 16px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
-      text-decoration: none; color: #fff; border: 1px solid var(--border); background: var(--bg-surface);
-      transition: transform 0.4s ease, border-color 0.4s ease;
+    #social {
+      content-visibility: auto;
+      contain-intrinsic-size: 250px;
     }
-    .social-item:hover { transform: translateY(-4px); }
-    
-    .social-icon {
-      width: 48px; height: 48px; border-radius: 12px; background: rgba(255,255,255,0.04);
-      display: flex; justify-content: center; align-items: center; font-size: 1.6rem;
-      border: 1px solid rgba(255,255,255,0.08); transition: var(--transition);
-    }
-    .social-item h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 2px; }
-    .social-item p { color: var(--text-muted); font-size: 0.85rem; font-weight: 600;}
 
-    .si-tg:hover { border-color: #0088cc; } .si-tg:hover .social-icon { background: #0088cc; color: #fff; border-color: #0088cc; box-shadow: 0 5px 15px rgba(0,136,204,0.4); }
-    .si-ig:hover { border-color: #e1306c; } .si-ig:hover .social-icon { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; border-color: transparent; box-shadow: 0 5px 15px rgba(225,48,108,0.4); }
-    .si-fb:hover { border-color: #1877f2; } .si-fb:hover .social-icon { background: #1877f2; color: #fff; border-color: #1877f2; box-shadow: 0 5px 15px rgba(24,119,242,0.4); }
-    .si-th:hover { border-color: #ffffff; } .si-th:hover .social-icon { background: #ffffff; color: #000; border-color: #ffffff; box-shadow: 0 5px 15px rgba(255,255,255,0.3); }
+    .social-dock-wrapper { position: relative; display: flex; justify-content: center; margin: 50px auto 70px; padding: 10px; width: 100%; max-width: 480px; }
+    .social-dock-bg {
+      position: absolute; inset: 0; background: rgba(15, 15, 25, 0.3); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.06); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); z-index: 1; transition: background 0.4s ease, border-color 0.4s ease;
+    }
+    .social-dock-items { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 16px; padding: 12px; width: 100%; direction: ltr; }
+    .dock-link { position: relative; text-decoration: none; }
+    .dock-tooltip {
+      position: absolute; bottom: 82px; left: 50%; transform: translateX(-50%) translateY(8px);
+      background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 6px 14px; border-radius: 10px; font-size: 0.75rem; font-weight: 700; color: #ffffff; opacity: 0; pointer-events: none;
+      white-space: nowrap; direction: rtl; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); transition: opacity 0.3s var(--transition), transform 0.3s var(--transition);
+    }
+    .dock-tooltip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border-width: 5px; border-style: solid; border-color: rgba(10, 10, 15, 0.85) transparent transparent transparent; }
+    .dock-link:hover .dock-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .dock-item {
+      position: relative; width: 58px; height: 58px; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); cursor: pointer; transform: translateZ(0); transition: transform 0.3s var(--transition), box-shadow 0.3s ease;
+      -webkit-clip-path: url(#squircleClip); clip-path: url(#squircleClip);
+    }
+    .dock-item iconify-icon { font-size: 1.8rem; color: #ffffff; transition: transform 0.3s ease; }
+    .dock-item:hover { transform: scale(1.18) translateY(-8px); }
+    .dock-item:hover iconify-icon { transform: scale(1.05); }
+    .dock-item:active { transform: scale(0.94) translateY(-3px) !important; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5) !important; transition: transform 0.1s ease !important; }
+
+    .dk-tg { background: linear-gradient(135deg, #0088cc, #00a2ed); }
+    .dk-tg:hover { box-shadow: 0 0 25px rgba(0, 136, 204, 0.7), inset 0 0 10px rgba(255,255,255,0.2); }
+    .dk-ig { background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+    .dk-ig:hover { box-shadow: 0 0 25px rgba(225, 48, 108, 0.7), inset 0 0 10px rgba(255,255,255,0.2); }
+    .dk-fb { background: linear-gradient(135deg, #1877f2, #1154c1); }
+    .dk-fb:hover { box-shadow: 0 0 25px rgba(24, 119, 242, 0.7), inset 0 0 10px rgba(255,255,255,0.2); }
+    .dk-th { background: linear-gradient(135deg, #111115, #22222b); border: 1px solid rgba(255,255,255,0.05); }
+    .dk-th:hover { box-shadow: 0 0 25px rgba(255, 255, 255, 0.35), inset 0 0 10px rgba(255,255,255,0.1); }
+
+    .social-dock-wrapper:has(.dk-tg:hover) .social-dock-bg { background: rgba(0, 136, 204, 0.08); border-color: rgba(0, 136, 204, 0.3); }
+    .social-dock-wrapper:has(.dk-ig:hover) .social-dock-bg { background: rgba(225, 48, 108, 0.08); border-color: rgba(225, 48, 108, 0.3); }
+    .social-dock-wrapper:has(.dk-fb:hover) .social-dock-bg { background: rgba(24, 119, 242, 0.08); border-color: rgba(24, 119, 242, 0.3); }
+    .social-dock-wrapper:has(.dk-th:hover) .social-dock-bg { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.2); }
 
     /* ==========================================================================
        8. الفوتر والأنيميشن
        ========================================================================== */
     footer { 
-      padding: 25px 10px; 
-      text-align: center; 
-      border-top: 1px solid var(--border); 
-      color: var(--text-muted); 
-      font-family: 'Orbitron', sans-serif; 
-      font-size: clamp(0.65rem, 2.5vw, 0.8rem); 
-      letter-spacing: 1px;
-      white-space: nowrap; 
+      padding: 25px 10px; text-align: center; border-top: 1px solid var(--border); color: var(--text-muted); 
+      font-family: 'Rajdhani', sans-serif; font-size: clamp(0.75rem, 2.5vw, 0.9rem); font-weight: 600; letter-spacing: 1px; white-space: nowrap; 
     }
-    
-    .reveal { opacity: 0; transform: translateY(20px); transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal { opacity: 0; transform: translateY(20px); transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, opacity; }
     .reveal.active { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
-  <!-- الدخولية السينمائية المذهلة -->
+  <!-- شاشة الدخولية السينمائية الفخمة -->
   <div id="intro-screen">
-    <div class="intro-brand">
-      <div class="intro-logo-icon"><iconify-icon icon="solar:gamepad-bold"></iconify-icon></div>
-      <div class="intro-name">PLAY ZONE</div>
+    <div class="loader-wrapper">
+      <span class="loader-letter">P</span>
+      <span class="loader-letter">L</span>
+      <span class="loader-letter">A</span>
+      <span class="loader-letter">Y</span>
+      <span class="loader-letter">&nbsp;</span> 
+      <span class="loader-letter">Z</span>
+      <span class="loader-letter">O</span>
+      <span class="loader-letter">N</span>
+      <span class="loader-letter">E</span>
+      <div class="loader"></div>
     </div>
-    <div class="spotlight-mask"></div>
   </div>
 
-  <!-- الخلفية -->
+  <!-- طبقة الخلفية المدمجة -->
   <div class="ambient-bg"></div>
   <div class="glow-orb orb-1"></div>
   <div class="glow-orb orb-2"></div>
 
-  <!-- المحتوى -->
+  <!-- حاوية الموقع الرئيسي -->
   <div class="container">
     <header>
       <div class="navbar">
@@ -313,14 +529,13 @@
       <section class="hero">
         <div class="hero-content reveal">
           <div class="status-badge"><span class="dot"></span>السيرفر متصل</div>
-          <!-- التحديث الجديد بناءً على فكرتك -->
           <h1>انطلق إلى عالم جديد من اللعب.<br> وابدأ رحلتك الآن.</h1>
           <p>منصتك المتكاملة لأحدث وأقوى ألعاب الموبايل. استمتع بتجربة تصفح سريعة، وروابط تحميل مباشرة وآمنة كلياً. انضم الآن إلى مجتمعنا وابدأ اللعب فوراً.</p>
           <div class="btn-group">
-            <a href="#games" class="btn btn-primary">
+            <a href="#games" class="cyber-btn btn-cyan">
               <iconify-icon icon="solar:gamepad-bold"></iconify-icon> تصفح الألعاب
             </a>
-            <a href="https://t.me/P1ay_Z0ne_Bot" class="btn btn-outline" target="_blank">
+            <a href="https://t.me/P1ay_Z0ne_Bot" class="cyber-btn btn-purple" target="_blank">
               <iconify-icon icon="mingcute:telegram-fill"></iconify-icon> افتح البوت الآن
             </a>
           </div>
@@ -331,75 +546,141 @@
         <h2 class="section-title reveal"><iconify-icon icon="solar:box-minimalistic-bold-duotone"></iconify-icon> <span>أحدث</span> الإصدارات</h2>
         
         <div class="games-grid">
-          <!-- اللعبة الأولى -->
-          <article class="spotlight-card reveal">
-            <div class="card-image-box">
-              <div class="price-tag">1000 IQD</div>
-              <img src="IMG1.PNG" alt="The Challenge" loading="lazy">
-            </div>
-            <div class="card-content">
-              <h3>The Challenge</h3>
-              <p>اختبر ردود أفعالك في أصعب التحديات. تفادى الفخاخ، تخطَ العقبات المعقدة، واثبت مهارتك للوصول إلى قمة الـ Leaderboard. هل تقبل التحدي؟</p>
-              <div class="download-grid">
-                <a href="https://t.me/P1ay_Z0ne_Bot" class="dl-btn dl-ios" target="_blank"><iconify-icon icon="ic:baseline-apple"></iconify-icon> iOS</a>
-                <a href="https://t.me/P1ay_Z0ne_Bot" class="dl-btn dl-android" target="_blank"><iconify-icon icon="mdi:android"></iconify-icon> Android</a>
+          
+          <!-- كارت اللعبة الأولى -->
+          <div class="game-card-container noselect reveal">
+            <div class="canvas">
+              <div class="tracker tr-1"></div><div class="tracker tr-2"></div><div class="tracker tr-3"></div><div class="tracker tr-4"></div><div class="tracker tr-5"></div>
+              <div class="tracker tr-6"></div><div class="tracker tr-7"></div><div class="tracker tr-8"></div><div class="tracker tr-9"></div><div class="tracker tr-10"></div>
+              <div class="tracker tr-11"></div><div class="tracker tr-12"></div><div class="tracker tr-13"></div><div class="tracker tr-14"></div><div class="tracker tr-15"></div>
+              <div class="tracker tr-16"></div><div class="tracker tr-17"></div><div class="tracker tr-18"></div><div class="tracker tr-19"></div><div class="tracker tr-20"></div>
+              <div class="tracker tr-21"></div><div class="tracker tr-22"></div><div class="tracker tr-23"></div><div class="tracker tr-24"></div><div class="tracker tr-25"></div>
+              
+              <div class="game-3d-card">
+                <div class="p-btn p-btn-power"></div>
+                <div class="p-btn p-btn-vol-up"></div>
+                <div class="p-btn p-btn-vol-down"></div>
+                
+                <div class="card-int">
+                  <div class="price-tag">1000 IQD</div>
+                  
+                  <div class="card-image-box">
+                    <div class="card-image-overlay"></div>
+                    <!-- إضافة الـ Aspect Ratio لمنع الـ Layout Shifts وتحسين سرعة الفتح وعرض الصورة فوراً -->
+                    <img src="IMG1.PNG" alt="The Challenge" width="340" height="240" loading="lazy">
+                  </div>
+                  
+                  <div class="card-content">
+                    <h3>The Challenge</h3>
+                    <p>اختبر ردود أفعالك في أصعب التحديات. تفادى الفخاخ الذكية، تخطَ العقبات المعقدة، واثبت مهارتك الفائقة للوصول إلى قمة قائمة الصدارة.</p>
+                    <div class="download-grid">
+                      <a href="https://t.me/P1ay_Z0ne_Bot" class="cyber-btn btn-sm btn-silver" target="_blank"><iconify-icon icon="ic:baseline-apple"></iconify-icon> iOS</a>
+                      <a href="https://t.me/P1ay_Z0ne_Bot" class="cyber-btn btn-sm btn-green" target="_blank"><iconify-icon icon="mdi:android"></iconify-icon> Android</a>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="phone-notch">
+                  <div class="phone-camera"><div class="phone-camera-lens"></div></div>
+                  <div class="phone-speaker"></div>
+                </div>
               </div>
-            </div>
-          </article>
 
-          <!-- اللعبة الثانية -->
-          <article class="spotlight-card reveal">
-            <div class="card-image-box">
-              <div class="price-tag">1000 IQD</div>
-              <img src="IMG2.PNG" alt="Chicken Life" loading="lazy">
             </div>
-            <div class="card-content">
-              <h3>Chicken Life</h3>
-              <p>عِش جنون اللعب في عالم مفتوح مليء بالكوميديا. أكمل المهام الغريبة، واجه تحديات غير متوقعة، واستمتع بتجربة لعب خفيفة وممتعة.</p>
-              <div class="download-grid">
-                <a href="https://t.me/P1ay_Z0ne_Bot" class="dl-btn dl-ios" target="_blank"><iconify-icon icon="ic:baseline-apple"></iconify-icon> iOS</a>
-                <a href="https://t.me/P1ay_Z0ne_Bot" class="dl-btn dl-android" target="_blank"><iconify-icon icon="mdi:android"></iconify-icon> Android</a>
+          </div>
+
+          <!-- كارت اللعبة الثانية -->
+          <div class="game-card-container noselect reveal">
+            <div class="canvas">
+              <div class="tracker tr-1"></div><div class="tracker tr-2"></div><div class="tracker tr-3"></div><div class="tracker tr-4"></div><div class="tracker tr-5"></div>
+              <div class="tracker tr-6"></div><div class="tracker tr-7"></div><div class="tracker tr-8"></div><div class="tracker tr-9"></div><div class="tracker tr-10"></div>
+              <div class="tracker tr-11"></div><div class="tracker tr-12"></div><div class="tracker tr-13"></div><div class="tracker tr-14"></div><div class="tracker tr-15"></div>
+              <div class="tracker tr-16"></div><div class="tracker tr-17"></div><div class="tracker tr-18"></div><div class="tracker tr-19"></div><div class="tracker tr-20"></div>
+              <div class="tracker tr-21"></div><div class="tracker tr-22"></div><div class="tracker tr-23"></div><div class="tracker tr-24"></div><div class="tracker tr-25"></div>
+              
+              <div class="game-3d-card">
+                <div class="p-btn p-btn-power"></div>
+                <div class="p-btn p-btn-vol-up"></div>
+                <div class="p-btn p-btn-vol-down"></div>
+                
+                <div class="card-int">
+                  <div class="price-tag">1000 IQD</div>
+                  
+                  <div class="card-image-box">
+                    <div class="card-image-overlay"></div>
+                    <img src="IMG2.PNG" alt="Chicken Life" width="340" height="240" loading="lazy">
+                  </div>
+                  
+                  <div class="card-content">
+                    <h3>Chicken Life</h3>
+                    <p>عِش جنون اللعب المطلق في عالم مفتوح والمواقف الطريفة. أكمل المهام الغريبة، واجه التحديات، واستمتع بتجربة أسلوب لعب فريد.</p>
+                    <div class="download-grid">
+                      <a href="https://t.me/P1ay_Z0ne_Bot" class="cyber-btn btn-sm btn-silver" target="_blank"><iconify-icon icon="ic:baseline-apple"></iconify-icon> iOS</a>
+                      <a href="https://t.me/P1ay_Z0ne_Bot" class="cyber-btn btn-sm btn-green" target="_blank"><iconify-icon icon="mdi:android"></iconify-icon> Android</a>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="phone-notch">
+                  <div class="phone-camera"><div class="phone-camera-lens"></div></div>
+                  <div class="phone-speaker"></div>
+                </div>
               </div>
+
             </div>
-          </article>
+          </div>
+
         </div>
       </section>
 
       <section id="social">
         <h2 class="section-title reveal"><iconify-icon icon="solar:global-bold-duotone"></iconify-icon> <span>مجتمع</span> الجيمرز</h2>
         
-        <div class="social-bento">
-          <a href="https://t.me/P1ay_Z0ne_Bot" class="social-item si-tg reveal" target="_blank">
-            <div class="social-icon"><iconify-icon icon="mingcute:telegram-fill"></iconify-icon></div>
-            <div>
-              <h4>البوت الرسمي</h4>
-              <p>سيرفر التحميل المباشر</p>
-            </div>
-          </a>
+        <svg width="0" height="0" style="position: absolute;">
+          <defs>
+            <clipPath id="squircleClip" clipPathUnits="objectBoundingBox">
+              <path d="M 0,0.5 C 0,0 0,0 0.5,0 S 1,0 1,0.5 1,1 0.5,1 0,1 0,0.5"></path>
+            </clipPath>
+          </defs>
+        </svg>
 
-          <a href="https://www.instagram.com/p1ay.zone?igsh=MW9uYTB1dTZxZnpocQ%3D%3D&utm_source=qr" class="social-item si-ig reveal" target="_blank">
-            <div class="social-icon"><iconify-icon icon="mdi:instagram"></iconify-icon></div>
-            <div>
-              <h4>إنستغرام</h4>
-              <p>لقطات حصرية وكواليس</p>
-            </div>
-          </a>
+        <div class="social-dock-wrapper reveal">
+          <div class="social-dock-bg"></div>
+          <div class="social-dock-items">
+            
+            <!-- تيليجرام -->
+            <a href="https://t.me/P1ay_Z0ne_Bot" class="dock-link" target="_blank">
+              <div class="dock-tooltip">بوت التحميل</div>
+              <div class="dock-item dk-tg">
+                <iconify-icon icon="mingcute:telegram-fill"></iconify-icon>
+              </div>
+            </a>
 
-          <a href="https://www.facebook.com/share/1AiqxvzMpc/?mibextid=wwXIfr" class="social-item si-fb reveal" target="_blank">
-            <div class="social-icon"><iconify-icon icon="mdi:facebook"></iconify-icon></div>
-            <div>
-              <h4>فيسبوك</h4>
-              <p>مجتمع الجيمرز الأكبر</p>
-            </div>
-          </a>
+            <!-- إنستغرام -->
+            <a href="https://www.instagram.com/p1ay.zone?igsh=MW9uYTB1dTZxZnpocQ%3D%3D&utm_source=qr" class="dock-link" target="_blank">
+              <div class="dock-tooltip">إنستغرام</div>
+              <div class="dock-item dk-ig">
+                <iconify-icon icon="mdi:instagram"></iconify-icon>
+              </div>
+            </a>
 
-          <a href="https://www.threads.com/@p1ay.zone?igshid=NTc4MTIwNjQ2YQ==" class="social-item si-th reveal" target="_blank">
-            <div class="social-icon"><iconify-icon icon="simple-icons:threads"></iconify-icon></div>
-            <div>
-              <h4>ثريدز</h4>
-              <p>تحديثات السيرفر السريعة</p>
-            </div>
-          </a>
+            <!-- فيسبوك -->
+            <a href="https://www.facebook.com/share/1AiqxvzMpc/?mibextid=wwXIfr" class="dock-link" target="_blank">
+              <div class="dock-tooltip">فيسبوك</div>
+              <div class="dock-item dk-fb">
+                <iconify-icon icon="mdi:facebook"></iconify-icon>
+              </div>
+            </a>
+
+            <!-- ثريدز -->
+            <a href="https://www.threads.com/@p1ay.zone?igshid=NTc4MTIwNjQ2YQ==" class="dock-link" target="_blank">
+              <div class="dock-tooltip">ثريدز</div>
+              <div class="dock-item dk-th">
+                <iconify-icon icon="simple-icons:threads"></iconify-icon>
+              </div>
+            </a>
+
+          </div>
         </div>
       </section>
     </main>
@@ -411,28 +692,15 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. تنظيف شاشة الدخولية
       setTimeout(() => {
         const intro = document.getElementById('intro-screen');
         if(intro) {
           intro.style.opacity = '0';
           setTimeout(() => intro.remove(), 800);
         }
-      }, 4500);
+      }, 5200);
 
-      // 2. إضاءة بطاقات الألعاب
-      if (window.matchMedia("(pointer: fine)").matches) {
-        const cards = document.querySelectorAll('.spotlight-card');
-        cards.forEach(card => {
-          card.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-            card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-          });
-        });
-      }
-
-      // 3. الظهور السلس عند التمرير
+      // تحسين أداء مراقب الظهور ليعمل بخفة وسلاسة بدون التسبب في تعليق المتصفح أثناء السكرول
       const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -440,7 +708,7 @@
             observer.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
+      }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
 
       document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     });
